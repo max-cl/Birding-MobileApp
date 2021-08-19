@@ -1,12 +1,9 @@
 import React, { useContext } from "react";
-import { SafeAreaView, StatusBar, ScrollView, View, StyleSheet, Dimensions, Text, Pressable } from "react-native";
+import { SafeAreaView, StatusBar, ScrollView, View, StyleSheet, Text, Pressable } from "react-native";
 import styled from "styled-components/native";
 
 // Components
 import CustomImage from "../../../components/CustomImage";
-
-// fakeData
-// import { fakeData } from "../../../fakeData";
 
 // Utils
 import imagesUtil from "../../../assets/images/images";
@@ -36,7 +33,7 @@ const StyledDescription = styled.Text`
 const BirdDetailsContainer = ({ route }) => {
     const { birdId } = route.params;
     // Global State
-    const [birds, setBirds] = useContext(BirdsContext);
+    const { birds, updateBirdChecked } = useContext(BirdsContext);
 
     return (
         <SafeAreaView style={styles.container}>
@@ -64,21 +61,7 @@ const BirdDetailsContainer = ({ route }) => {
                                         padding: 8,
                                     }}
                                 >
-                                    <Pressable
-                                        style={styles.button}
-                                        onPress={() => {
-                                            const birdsCopy = [...birds];
-                                            const bird = birdsCopy
-                                                .filter((f) => f.id === birdId)
-                                                .map((b) => {
-                                                    return { ...b, checked: b.checked ? false : true };
-                                                })[0];
-                                            const indexBird = birdsCopy.findIndex((t) => t.id === birdId);
-                                            birdsCopy.splice(indexBird, 1);
-                                            birdsCopy.push(bird);
-                                            setBirds(birdsCopy);
-                                        }}
-                                    >
+                                    <Pressable style={styles.button} onPress={() => updateBirdChecked(birdId)}>
                                         <Text style={{ color: "lightblue", fontWeight: "900", textAlign: "center" }}>
                                             {bird.checked ? "Market as seen" : "No seen"}
                                         </Text>

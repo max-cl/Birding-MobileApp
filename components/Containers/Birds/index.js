@@ -16,9 +16,6 @@ import { MaterialIcons, FontAwesome, FontAwesome5, AntDesign } from "@expo/vecto
 // Components
 import CustomImage from "../../../components/CustomImage";
 
-// fakeData
-import { fakeData } from "../../../fakeData";
-
 // Utils
 import imagesUtil from "../../../assets/images/images";
 
@@ -34,7 +31,7 @@ const BirdsContainer = ({ navigation }) => {
     const [openSearchModal, setOpenSearchModal] = useState(false);
     const [searchBird, setSearchBird] = useState("");
     // Global States
-    const [birds, setBirds] = useContext(BirdsContext);
+    const { birds, setBirds } = useContext(BirdsContext);
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -119,17 +116,7 @@ const BirdsContainer = ({ navigation }) => {
                                 value={searchBird}
                                 onChangeText={setSearchBird}
                             />
-                            <Pressable
-                                style={[styles.button, styles.buttonClose]}
-                                onPress={() => {
-                                    const birdsFiltered = birds.filter((b) => b.name.includes(searchBird));
-                                    // console.log(birdsFiltered);
-                                    setBirds(birdsFiltered);
-                                }}
-                            >
-                                <Text style={styles.textStyle}>Search</Text>
-                            </Pressable>
-                            <Pressable style={[styles.button, styles.buttonClose]} onPress={() => setBirds(fakeData)}>
+                            <Pressable style={[styles.button, styles.buttonClose]} onPress={() => setSearchBird("")}>
                                 <Text style={styles.textStyle}>Reset</Text>
                             </Pressable>
                             <AntDesign
@@ -159,33 +146,37 @@ const BirdsContainer = ({ navigation }) => {
 
                 {!showSeen ? (
                     <View style={styles.content}>
-                        {birds.map((d) => (
-                            <TouchableOpacity key={d.id} onPress={() => onPressBirdDetails(d.id)}>
-                                <View style={styles.box}>
-                                    <CustomImage style={styles.img} imgSrc={imagesUtil[`${d.img}`]} />
-                                    <Text style={styles.birdName}>{d.name}</Text>
-                                </View>
-                                <MaterialIcons
-                                    size={16}
-                                    color={"coral"}
-                                    name={d.checked ? "check-box" : ""}
-                                    style={styles.checkbox}
-                                />
-                            </TouchableOpacity>
-                        ))}
+                        {birds.length > 0 &&
+                            birds
+                                .filter((b) => b.name.toUpperCase().includes(searchBird.toUpperCase()))
+                                .map((d) => (
+                                    <TouchableOpacity key={d.id} onPress={() => onPressBirdDetails(d.id)}>
+                                        <View style={styles.box}>
+                                            <CustomImage style={styles.img} imgSrc={imagesUtil[`${d.img}`]} />
+                                            <Text style={styles.birdName}>{d.name}</Text>
+                                        </View>
+                                        <MaterialIcons
+                                            size={16}
+                                            color={"coral"}
+                                            name={d.checked ? "check-box" : ""}
+                                            style={styles.checkbox}
+                                        />
+                                    </TouchableOpacity>
+                                ))}
                     </View>
                 ) : (
                     <View style={styles.content}>
-                        {birds
-                            .filter((f) => f.checked === showSeen)
-                            .map((d) => (
-                                <TouchableOpacity key={d.id} onPress={() => onPressBirdDetails(d.id)}>
-                                    <View style={styles.box}>
-                                        <CustomImage style={styles.img} imgSrc={imagesUtil[`${d.img}`]} />
-                                        <Text style={styles.birdName}>{d.name}</Text>
-                                    </View>
-                                </TouchableOpacity>
-                            ))}
+                        {birds.length > 0 &&
+                            birds
+                                .filter((f) => f.checked === showSeen)
+                                .map((d) => (
+                                    <TouchableOpacity key={d.id} onPress={() => onPressBirdDetails(d.id)}>
+                                        <View style={styles.box}>
+                                            <CustomImage style={styles.img} imgSrc={imagesUtil[`${d.img}`]} />
+                                            <Text style={styles.birdName}>{d.name}</Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                ))}
                     </View>
                 )}
             </ScrollView>
@@ -286,12 +277,6 @@ const styles = StyleSheet.create({
         shadowRadius: 4,
         elevation: 5,
     },
-    // button: {
-    //     borderRadius: 20,
-    //     padding: 10,
-    //     elevation: 2,
-    // },
-
     buttonClose: {
         backgroundColor: "#2196F3",
     },
