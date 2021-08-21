@@ -22,7 +22,7 @@ import imagesUtil from "../../../assets/images/images";
 // Context
 import { BirdsContext } from "../../../context/birds-context";
 
-const options = ["All Birds", "I have seen"];
+const options = ["All Birds", "Birds I've seen"];
 const BirdsContainer = ({ navigation }) => {
     // Local States
     const [selectedIndexOption, setSelectedIndexOption] = useState(0);
@@ -31,7 +31,7 @@ const BirdsContainer = ({ navigation }) => {
     const [openSearchModal, setOpenSearchModal] = useState(false);
     const [searchBird, setSearchBird] = useState("");
     // Global States
-    const { birds, setBirds } = useContext(BirdsContext);
+    const { birds } = useContext(BirdsContext);
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -50,12 +50,7 @@ const BirdsContainer = ({ navigation }) => {
                             name="sort-alpha-desc"
                             size={24}
                             color="black"
-                            onPress={() => {
-                                const birdsCopy = [...birds];
-                                birdsCopy.sort((a, b) => a.name < b.name);
-                                setBirds(birdsCopy);
-                                setOrderBy(!orderBy);
-                            }}
+                            onPress={() => setOrderBy(!orderBy)}
                         />
                     );
                 } else {
@@ -64,12 +59,7 @@ const BirdsContainer = ({ navigation }) => {
                             name="sort-alpha-asc"
                             size={24}
                             color="black"
-                            onPress={() => {
-                                const birdsCopy = [...birds];
-                                birdsCopy.sort((a, b) => a.name > b.name);
-                                setBirds(birdsCopy);
-                                setOrderBy(!orderBy);
-                            }}
+                            onPress={() => setOrderBy(!orderBy)}
                         />
                     );
                 }
@@ -148,6 +138,7 @@ const BirdsContainer = ({ navigation }) => {
                     <View style={styles.content}>
                         {birds.length > 0 &&
                             birds
+                                .sort((a, b) => (orderBy ? a.name < b.name : a.name > b.name))
                                 .filter((b) => b.name.toUpperCase().includes(searchBird.toUpperCase()))
                                 .map((d) => (
                                     <TouchableOpacity key={d.id} onPress={() => onPressBirdDetails(d.id)}>
@@ -168,6 +159,7 @@ const BirdsContainer = ({ navigation }) => {
                     <View style={styles.content}>
                         {birds.length > 0 &&
                             birds
+                                .sort((a, b) => (orderBy ? a.name < b.name : a.name > b.name))
                                 .filter((f) => f.checked === showSeen)
                                 .map((d) => (
                                     <TouchableOpacity key={d.id} onPress={() => onPressBirdDetails(d.id)}>
@@ -202,7 +194,7 @@ const styles = StyleSheet.create({
         marginVertical: 8,
         paddingHorizontal: 8,
         paddingVertical: 6,
-        borderRadius: 4,
+        // borderRadius: 4,
         backgroundColor: "oldlace",
         alignSelf: "flex-start",
         marginHorizontal: "1%",
@@ -281,8 +273,9 @@ const styles = StyleSheet.create({
         backgroundColor: "#2196F3",
     },
     textStyle: {
-        color: "white",
-        fontWeight: "bold",
+        fontSize: 16,
+        fontWeight: "400",
+        color: "#FFFFFF",
         textAlign: "center",
     },
     modalText: {

@@ -62,8 +62,15 @@ const BirdDetailsContainer = ({ route }) => {
                                     }}
                                 >
                                     <Pressable style={styles.button} onPress={() => updateBirdChecked(birdId)}>
-                                        <Text style={{ color: "lightblue", fontWeight: "900", textAlign: "center" }}>
-                                            {bird.checked ? "Market as seen" : "No seen"}
+                                        <Text
+                                            style={{
+                                                color: "white",
+                                                fontSize: 16,
+                                                fontWeight: "800",
+                                                textAlign: "center",
+                                            }}
+                                        >
+                                            {bird.checked ? "Mark as seen" : "No seen"}
                                         </Text>
                                     </Pressable>
                                 </View>
@@ -113,7 +120,7 @@ const styles = StyleSheet.create({
         resizeMode: "stretch",
     },
     button: {
-        borderRadius: 4,
+        // borderRadius: 4,
         backgroundColor: "#2196F3",
         minWidth: "42%",
         padding: 16,

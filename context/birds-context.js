@@ -1,5 +1,6 @@
 import React, { useState, createContext, useEffect } from "react";
 import axios from "axios";
+import { API_URL } from "@env";
 
 // Create Context Object
 export const BirdsContext = createContext();
@@ -11,8 +12,16 @@ export const BirdsContextProvider = (props) => {
     useEffect(() => {
         let isMounted = true;
         (async () => {
-            const birdsFetched = await axios.get("http://localhost:3001/api/birds");
-            if (isMounted) setBirds(birdsFetched.data);
+            try {
+                const birdsFetched = await axios.get(`${API_URL}/api/birds`);
+                if (isMounted) {
+                    setBirds(birdsFetched.data);
+                } else {
+                    return null;
+                }
+            } catch (error) {
+                console.log("Error Bird-Context: ", error);
+            }
         })();
         return () => {
             isMounted = false;
@@ -30,7 +39,7 @@ export const BirdsContextProvider = (props) => {
             const indexBird = birdsCopy.findIndex((t) => t.id === birdId);
             birdsCopy.splice(indexBird, 1);
             birdsCopy.push(bird);
-            await axios.put("http://localhost:3001/api/birds", {
+            await axios.put(`${API_URL}/api/birds`, {
                 birdId,
                 birdChecked: bird.checked,
             });
