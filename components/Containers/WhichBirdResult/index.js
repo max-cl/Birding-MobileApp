@@ -30,13 +30,12 @@ const WhichBirdResultContainer = ({ route, navigation }) => {
                     {birds.length > 0 &&
                         birds
                             .sort((a, b) => a.name < b.name)
-                            .filter((b) =>
-                                b.size
-                                    .toUpperCase()
-                                    .includes(
-                                        filterBird.birdSizeSelected ? filterBird.birdSizeSelected.toUpperCase() : ""
-                                    )
+                            .filter((f) =>
+                                filterBird.size === undefined
+                                    ? true
+                                    : f.size.toUpperCase() === filterBird.size.toUpperCase()
                             )
+                            .filter((f) => (filterBird.color === undefined ? true : f.color.includes(filterBird.color)))
                             .map((d) => (
                                 <TouchableOpacity key={d.id} onPress={() => onPressBirdDetails(d.id)}>
                                     <View style={styles.box}>

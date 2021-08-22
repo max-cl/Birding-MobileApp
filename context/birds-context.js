@@ -8,6 +8,7 @@ export const BirdsContext = createContext();
 // Create a provider for components to consume and subscribe to changes
 export const BirdsContextProvider = (props) => {
     const [birds, setBirds] = useState([]);
+    const [birdColors, setBirdColors] = useState([]);
 
     useEffect(() => {
         let isMounted = true;
@@ -16,6 +17,8 @@ export const BirdsContextProvider = (props) => {
                 const birdsFetched = await axios.get(`${API_URL}/api/birds`);
                 if (isMounted) {
                     setBirds(birdsFetched.data);
+                    const colorsFetched = birdsFetched.data.map((bird) => bird.color);
+                    setBirdColors([...new Set(colorsFetched.flat(2))]);
                 } else {
                     return null;
                 }
@@ -27,6 +30,25 @@ export const BirdsContextProvider = (props) => {
             isMounted = false;
         };
     });
+
+    // useEffect(() => {
+    //     let isMounted = true;
+    //     (async () => {
+    //         try {
+    //             const birdsFetched = await axios.get(`${API_URL}/api/birds`);
+    //             if (isMounted) {
+    //                 setBirds(birdsFetched.data);
+    //             } else {
+    //                 return null;
+    //             }
+    //         } catch (error) {
+    //             console.log("Error Bird-Context: ", error);
+    //         }
+    //     })();
+    //     return () => {
+    //         isMounted = false;
+    //     };
+    // });
 
     const updateBirdChecked = async (birdId) => {
         try {
@@ -51,6 +73,8 @@ export const BirdsContextProvider = (props) => {
     };
 
     return (
-        <BirdsContext.Provider value={{ birds, setBirds, updateBirdChecked }}>{props.children}</BirdsContext.Provider>
+        <BirdsContext.Provider value={{ birds, setBirds, updateBirdChecked, birdColors }}>
+            {props.children}
+        </BirdsContext.Provider>
     );
 };

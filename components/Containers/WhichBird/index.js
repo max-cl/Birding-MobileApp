@@ -8,9 +8,9 @@ import { BirdsContext } from "../../../context/birds-context";
 
 const WhichBirdContainer = ({ navigation }) => {
     // Global State
-    const { birds } = useContext(BirdsContext);
+    const { birds, birdColors } = useContext(BirdsContext);
     // Local States
-    const [filterBird, setFilterBird] = useState({ birdSizeSelected: undefined, birdColorSelected: undefined });
+    const [filterBird, setFilterBird] = useState({ size: undefined, color: undefined });
     const [openSizeModal, setOpenSizeModal] = useState(false);
     const [openColorModal, setOpenColorModal] = useState(false);
 
@@ -19,6 +19,8 @@ const WhichBirdContainer = ({ navigation }) => {
             filterBird: filterBird,
         });
     // const onPressBirdSize = () => navigation.navigate("BirdSize");
+
+    // console.log("filterBird: ", filterBird);
 
     return (
         <SafeAreaView style={styles.container}>
@@ -39,10 +41,10 @@ const WhichBirdContainer = ({ navigation }) => {
                                     styles.button,
                                     styles.buttonClose,
                                     styles.buttonModal,
-                                    filterBird.birdSizeSelected === "small" && styles.selected,
+                                    filterBird.size === "small" && styles.selected,
                                 ]}
                                 onPress={() => {
-                                    setFilterBird({ ...filterBird, birdSizeSelected: "small" });
+                                    setFilterBird({ ...filterBird, size: "small" });
                                     setOpenSizeModal(!openSizeModal);
                                 }}
                             >
@@ -62,10 +64,10 @@ const WhichBirdContainer = ({ navigation }) => {
                                     styles.button,
                                     styles.buttonClose,
                                     styles.buttonModal,
-                                    filterBird.birdSizeSelected === "medium" && styles.selected,
+                                    filterBird.size === "medium" && styles.selected,
                                 ]}
                                 onPress={() => {
-                                    setFilterBird({ ...filterBird, birdSizeSelected: "medium" });
+                                    setFilterBird({ ...filterBird, size: "medium" });
                                     setOpenSizeModal(!openSizeModal);
                                 }}
                             >
@@ -85,10 +87,10 @@ const WhichBirdContainer = ({ navigation }) => {
                                     styles.button,
                                     styles.buttonClose,
                                     styles.buttonModal,
-                                    filterBird.birdSizeSelected === "big" && styles.selected,
+                                    filterBird.size === "big" && styles.selected,
                                 ]}
                                 onPress={() => {
-                                    setFilterBird({ ...filterBird, birdSizeSelected: "big" });
+                                    setFilterBird({ ...filterBird, size: "big" });
                                     setOpenSizeModal(!openSizeModal);
                                 }}
                             >
@@ -124,122 +126,27 @@ const WhichBirdContainer = ({ navigation }) => {
                     onRequestClose={() => setOpenColorModal(!openColorModal)}
                 >
                     <View style={styles.centeredView}>
-                        <View style={styles.modalView}>
-                            <Pressable
-                                style={[
-                                    styles.button,
-                                    styles.buttonClose,
-                                    styles.buttonModal,
-                                    filterBird.birdColorSelected === "brown" && styles.selected,
-                                ]}
-                                onPress={() => {
-                                    setFilterBird({ ...filterBird, birdColorSelected: "brown" });
-                                    setOpenColorModal(!openColorModal);
-                                }}
-                            >
-                                <Text
+                        <View style={styles.modalViewColors}>
+                            {birdColors.map((color, index) => (
+                                <Pressable
+                                    key={index}
                                     style={{
-                                        fontSize: 12,
-                                        fontWeight: "400",
-                                        color: "#FFFFFF",
-                                        textAlign: "center",
+                                        backgroundColor: `${color}`,
+                                        borderRadius: 50,
+                                        width: 64,
+                                        height: 64,
+                                        margin: 4,
+                                        borderColor: "#C0C0C0",
+                                        borderWidth: 1,
+                                    }}
+                                    onPress={() => {
+                                        setFilterBird({ ...filterBird, color });
+                                        setOpenColorModal(!openColorModal);
                                     }}
                                 >
-                                    Brown
-                                </Text>
-                            </Pressable>
-                            <Pressable
-                                style={[
-                                    styles.button,
-                                    styles.buttonClose,
-                                    styles.buttonModal,
-                                    filterBird.birdColorSelected === "red" && styles.selected,
-                                ]}
-                                onPress={() => {
-                                    setFilterBird({ ...filterBird, birdColorSelected: "red" });
-                                    setOpenColorModal(!openColorModal);
-                                }}
-                            >
-                                <Text
-                                    style={{
-                                        fontSize: 12,
-                                        fontWeight: "400",
-                                        color: "#FFFFFF",
-                                        textAlign: "center",
-                                    }}
-                                >
-                                    Red
-                                </Text>
-                            </Pressable>
-                            <Pressable
-                                style={[
-                                    styles.button,
-                                    styles.buttonClose,
-                                    styles.buttonModal,
-                                    filterBird.birdColorSelected === "yellow" && styles.selected,
-                                ]}
-                                onPress={() => {
-                                    setFilterBird({ ...filterBird, birdColorSelected: "yellow" });
-                                    setOpenColorModal(!openColorModal);
-                                }}
-                            >
-                                <Text
-                                    style={{
-                                        fontSize: 12,
-                                        fontWeight: "400",
-                                        color: "#FFFFFF",
-                                        textAlign: "center",
-                                    }}
-                                >
-                                    Yellow
-                                </Text>
-                            </Pressable>
-                            <Pressable
-                                style={[
-                                    styles.button,
-                                    styles.buttonClose,
-                                    styles.buttonModal,
-                                    filterBird.birdColorSelected === "white" && styles.selected,
-                                ]}
-                                onPress={() => {
-                                    setFilterBird({ ...filterBird, birdColorSelected: "white" });
-                                    setOpenColorModal(!openColorModal);
-                                }}
-                            >
-                                <Text
-                                    style={{
-                                        fontSize: 12,
-                                        fontWeight: "400",
-                                        color: "#FFFFFF",
-                                        textAlign: "center",
-                                    }}
-                                >
-                                    White
-                                </Text>
-                            </Pressable>
-                            <Pressable
-                                style={[
-                                    styles.button,
-                                    styles.buttonClose,
-                                    styles.buttonModal,
-                                    filterBird.birdColorSelected === "black" && styles.selected,
-                                ]}
-                                onPress={() => {
-                                    setFilterBird({ ...filterBird, birdColorSelected: "black" });
-                                    setOpenColorModal(!openColorModal);
-                                }}
-                            >
-                                <Text
-                                    style={{
-                                        fontSize: 12,
-                                        fontWeight: "400",
-                                        color: "#FFFFFF",
-                                        textAlign: "center",
-                                    }}
-                                >
-                                    Black
-                                </Text>
-                            </Pressable>
+                                    <Text>{"                  "}</Text>
+                                </Pressable>
+                            ))}
 
                             <AntDesign
                                 name="closecircle"
@@ -256,7 +163,7 @@ const WhichBirdContainer = ({ navigation }) => {
                 <View style={{ position: "absolute", top: 24, right: 16 }}>
                     <Pressable
                         style={[styles.button, { width: 100 }]}
-                        onPress={() => setFilterBird({ birdSizeSelected: undefined, birdColorSelected: undefined })}
+                        onPress={() => setFilterBird({ size: undefined, color: undefined })}
                     >
                         <Text style={{ fontSize: 16, fontWeight: "400", color: "coral", textAlign: "center" }}>
                             Reset filter
@@ -271,12 +178,12 @@ const WhichBirdContainer = ({ navigation }) => {
                             style={[
                                 styles.button,
                                 styles.buttonClose,
-                                filterBird.birdSizeSelected !== undefined && styles.selected,
+                                filterBird.size !== undefined && styles.selected,
                             ]}
                             onPress={() => setOpenSizeModal(!openSizeModal)}
                         >
-                            <Text style={{ fontSize: 12, fontWeight: "200", color: "#FFFFFF", textAlign: "center" }}>
-                                {filterBird.birdSizeSelected !== undefined ? filterBird.birdSizeSelected : "Choose"}
+                            <Text style={{ fontSize: 12, fontWeight: "400", color: "#FFFFFF", textAlign: "center" }}>
+                                {filterBird.size !== undefined ? "Chosen" : "Choose"}
                             </Text>
                         </Pressable>
                     </View>
@@ -287,12 +194,12 @@ const WhichBirdContainer = ({ navigation }) => {
                             style={[
                                 styles.button,
                                 styles.buttonClose,
-                                filterBird.birdColorSelected !== undefined && styles.selected,
+                                filterBird.color !== undefined && styles.selected,
                             ]}
                             onPress={() => setOpenColorModal(!openColorModal)}
                         >
-                            <Text style={{ fontSize: 12, fontWeight: "200", color: "#FFFFFF", textAlign: "center" }}>
-                                {filterBird.birdColorSelected !== undefined ? filterBird.birdColorSelected : "Choose"}
+                            <Text style={{ fontSize: 12, fontWeight: "400", color: "#FFFFFF", textAlign: "center" }}>
+                                {filterBird.color !== undefined ? "Chosen" : "Choose"}
                             </Text>
                         </Pressable>
                     </View>
@@ -303,19 +210,52 @@ const WhichBirdContainer = ({ navigation }) => {
                             </Text>
 
                             <Text style={{ fontSize: 12, fontWeight: "400", color: "#3F3F3F", textAlign: "center" }}>
-                                {filterBird.birdSizeSelected
+                                {`${
+                                    birds
+                                        .filter((f) =>
+                                            filterBird.size === undefined
+                                                ? true
+                                                : f.size.toUpperCase() === filterBird.size.toUpperCase()
+                                        )
+                                        .filter((f) =>
+                                            filterBird.color === undefined ? true : f.color.includes(filterBird.color)
+                                        ).length
+                                } results`}
+
+                                {/* {`${
+                                    birds.filter((f) => {
+                                        return filterBird.color === undefined
+                                            ? true
+                                            : f.color.includes(filterBird.color) &&
+                                                  (filterBird.size === undefined
+                                                      ? true
+                                                      : f.size.toUpperCase() === filterBird.size.toUpperCase());
+                                    }).length
+                                } results`} */}
+
+                                {/* {filterBird.size && filterBird.color
                                     ? `${
-                                          birds.filter((f) =>
-                                              f.size
-                                                  .toUpperCase()
-                                                  .includes(
-                                                      filterBird.birdSizeSelected
-                                                          ? filterBird.birdSizeSelected.toUpperCase()
-                                                          : ""
-                                                  )
-                                          ).length
+                                          birds
+                                              .filter((b) =>
+                                                  b.color
+                                                      .map((c) => c)
+                                                      .includes(
+                                                          filterBird.color
+                                                              ? filterBird.color
+                                                              : ""
+                                                      )
+                                              )
+                                              .filter((f) =>
+                                                  f.size
+                                                      .toUpperCase()
+                                                      .includes(
+                                                          filterBird.size
+                                                              ? filterBird.size.toUpperCase()
+                                                              : ""
+                                                      )
+                                              ).length
                                       } results`
-                                    : `${birds.length} results`}
+                                    : `${birds.length} results`} */}
                             </Text>
                         </Pressable>
                     </View>
@@ -396,6 +336,28 @@ const styles = StyleSheet.create({
         alignItems: "center",
         flexDirection: "column",
         padding: 24,
+    },
+    modalViewColors: {
+        margin: 0,
+        backgroundColor: "white",
+        position: "relative",
+        borderRadius: 20,
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
+        width: 240,
+        height: 400,
+        justifyContent: "space-evenly",
+        flexDirection: "row",
+        flexWrap: "wrap",
+        paddingVertical: 56,
+        paddingHorizontal: 12,
     },
     buttonClose: {
         backgroundColor: "#2196F3",
