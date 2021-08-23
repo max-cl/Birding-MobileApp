@@ -1,26 +1,75 @@
 import React, { useState, useLayoutEffect, useContext } from "react";
-import {
-    StatusBar,
-    SafeAreaView,
-    ScrollView,
-    StyleSheet,
-    View,
-    TouchableOpacity,
-    Text,
-    Modal,
-    Pressable,
-    TextInput,
-} from "react-native";
 import { MaterialIcons, FontAwesome, FontAwesome5, AntDesign } from "@expo/vector-icons";
+import styled from "styled-components/native";
 
 // Components
-import CustomImage from "../../../components/CustomImage";
+import {
+    StyledSafeAreaView,
+    StyledScrollView,
+    CustomImage,
+    StyledContentView,
+    StyledModal,
+    StyledTextInput,
+    StyledPressable,
+} from "../../Common";
 
 // Utils
 import imagesUtil from "../../../assets/images/images";
 
 // Context
 import { BirdsContext } from "../../../context/birds-context";
+
+const StyledTouchableOpacityOptions = styled.TouchableOpacity`
+    margin: 8px 8px;
+    padding: 8px;
+    background-color: ${(props) => (props.selected ? "coral" : "oldlace")};
+    align-self: flex-start;
+    min-width: 42%;
+    text-align: center;
+`;
+
+const StyledButtonLabelOptions = styled.Text`
+    font-size: 12px;
+    font-weight: 500;
+    color: ${(props) => (props.selected ? "white" : "coral")};
+`;
+
+const StyledTouchableOpacity = styled.TouchableOpacity``;
+
+const StyledButtonLabel = styled.Text`
+    font-size: 12px;
+    font-weight: 400;
+    color: #ffffff;
+    text-align: center;
+`;
+
+const StyledBox = styled.View`
+    width: 100px;
+    height: 100px;
+    padding: 2px;
+    background-color: #f0f0f0;
+    position: relative;
+`;
+
+const StyledMaterialIcons = styled(MaterialIcons)`
+    position: absolute;
+    left: 0;
+    top: 0;
+`;
+
+const StyledBirdName = styled.Text`
+    position: absolute;
+    font-weight: 600;
+    bottom: 2px;
+    left: 4px;
+    font-size: 8px;
+`;
+
+const StyledButtonCloseModal = styled(AntDesign)`
+    position: absolute;
+    right: 8px;
+    top: 8px;
+`;
 
 const options = ["All Birds", "Birds I've seen"];
 const BirdsContainer = ({ navigation }) => {
@@ -67,221 +116,85 @@ const BirdsContainer = ({ navigation }) => {
         });
     }, [navigation, birds]);
 
-    const onPressBirdDetails = (birdId) => {
-        // console.log("onPress: ", birdId);
-        navigation.push("Details", {
-            birdId: birdId,
-        });
-    };
+    const onPressBirdDetails = (birdId) => navigation.push("Details", { birdId: birdId });
 
     const onPressOptions = (optionIndex) => {
-        // console.log("optionIndex: ", optionIndex);
-        // console.log("showSeen: ", showSeen);
         setSelectedIndexOption(optionIndex);
         setShowSeen(!showSeen);
     };
     return (
-        <SafeAreaView style={styles.container}>
-            <ScrollView style={styles.scrollView}>
-                <Modal
-                    animationType="slide"
-                    transparent={true}
-                    visible={openSearchModal}
-                    onRequestClose={() => {
-                        setOpenSearchModal(!openSearchModal);
-                    }}
-                >
-                    <View style={styles.centeredView}>
-                        <View style={styles.modalView}>
-                            <TextInput
-                                style={{
-                                    height: 32,
-                                    width: 160,
-                                    padding: 8,
-                                    borderColor: "#C0C0C0",
-                                    borderWidth: 1,
-                                }}
-                                // defaultValue="Search for a bird..."
-                                placeholder="Search for a bird..."
-                                value={searchBird}
-                                onChangeText={setSearchBird}
-                            />
-                            <Pressable style={[styles.button, styles.buttonClose]} onPress={() => setSearchBird("")}>
-                                <Text style={styles.textStyle}>Reset</Text>
-                            </Pressable>
-                            <AntDesign
-                                name="closecircle"
-                                size={24}
-                                color="black"
-                                onPress={() => setOpenSearchModal(!openSearchModal)}
-                                style={{ position: "absolute", right: 8, top: 8 }}
-                            />
-                        </View>
-                    </View>
-                </Modal>
+        <StyledSafeAreaView>
+            <StyledScrollView>
+                <StyledModal openModal={openSearchModal} onRequestClose={() => setOpenSearchModal(!openSearchModal)}>
+                    <StyledTextInput
+                        placeholder="Search for a bird..."
+                        value={searchBird}
+                        onChangeText={setSearchBird}
+                    />
+                    <StyledPressable onPress={() => setSearchBird("")}>
+                        <StyledButtonLabel>Reset</StyledButtonLabel>
+                    </StyledPressable>
+                    <StyledButtonCloseModal
+                        name="closecircle"
+                        size={24}
+                        color="black"
+                        onPress={() => setOpenSearchModal(!openSearchModal)}
+                    />
+                </StyledModal>
 
-                <View style={styles.row}>
+                <StyledContentView>
                     {options.map((option, index) => (
-                        <TouchableOpacity
+                        <StyledTouchableOpacityOptions
                             key={index}
                             onPress={() => onPressOptions(index)}
-                            style={[styles.button, selectedIndexOption === index && styles.selected]}
+                            selected={selectedIndexOption === index}
                         >
-                            <Text style={[styles.buttonLabel, selectedIndexOption === index && styles.selectedLabel]}>
+                            <StyledButtonLabelOptions selected={selectedIndexOption === index}>
                                 {option}
-                            </Text>
-                        </TouchableOpacity>
+                            </StyledButtonLabelOptions>
+                        </StyledTouchableOpacityOptions>
                     ))}
-                </View>
+                </StyledContentView>
 
                 {!showSeen ? (
-                    <View style={styles.content}>
+                    <StyledContentView>
                         {birds.length > 0 &&
                             birds
                                 .sort((a, b) => (orderBy ? a.name < b.name : a.name > b.name))
                                 .filter((b) => b.name.toUpperCase().includes(searchBird.toUpperCase()))
                                 .map((d) => (
-                                    <TouchableOpacity key={d.id} onPress={() => onPressBirdDetails(d.id)}>
-                                        <View style={styles.box}>
-                                            <CustomImage style={styles.img} imgSrc={imagesUtil[`${d.img}`]} />
-                                            <Text style={styles.birdName}>{d.name}</Text>
-                                        </View>
-                                        <MaterialIcons
+                                    <StyledTouchableOpacity key={d.id} onPress={() => onPressBirdDetails(d.id)}>
+                                        <StyledBox>
+                                            <CustomImage height="80%" imgSrc={imagesUtil[`${d.img}`]} />
+                                            <StyledBirdName>{d.name}</StyledBirdName>
+                                        </StyledBox>
+                                        <StyledMaterialIcons
                                             size={16}
                                             color={"coral"}
                                             name={d.checked ? "check-box" : ""}
-                                            style={styles.checkbox}
                                         />
-                                    </TouchableOpacity>
+                                    </StyledTouchableOpacity>
                                 ))}
-                    </View>
+                    </StyledContentView>
                 ) : (
-                    <View style={styles.content}>
+                    <StyledContentView>
                         {birds.length > 0 &&
                             birds
                                 .sort((a, b) => (orderBy ? a.name < b.name : a.name > b.name))
                                 .filter((f) => f.checked === showSeen)
                                 .map((d) => (
-                                    <TouchableOpacity key={d.id} onPress={() => onPressBirdDetails(d.id)}>
-                                        <View style={styles.box}>
-                                            <CustomImage style={styles.img} imgSrc={imagesUtil[`${d.img}`]} />
-                                            <Text style={styles.birdName}>{d.name}</Text>
-                                        </View>
-                                    </TouchableOpacity>
+                                    <StyledTouchableOpacity key={d.id} onPress={() => onPressBirdDetails(d.id)}>
+                                        <StyledBox>
+                                            <CustomImage height="100%" imgSrc={imagesUtil[`${d.img}`]} />
+                                            <StyledBirdName>{d.name}</StyledBirdName>
+                                        </StyledBox>
+                                    </StyledTouchableOpacity>
                                 ))}
-                    </View>
+                    </StyledContentView>
                 )}
-            </ScrollView>
-        </SafeAreaView>
+            </StyledScrollView>
+        </StyledSafeAreaView>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        paddingTop: StatusBar.currentHeight,
-    },
-    scrollView: {
-        backgroundColor: "#FFFFFF",
-        marginHorizontal: 0,
-    },
-    row: {
-        flexDirection: "row",
-        flexWrap: "wrap",
-        justifyContent: "center",
-    },
-    button: {
-        marginVertical: 8,
-        paddingHorizontal: 8,
-        paddingVertical: 6,
-        // borderRadius: 4,
-        backgroundColor: "oldlace",
-        alignSelf: "flex-start",
-        marginHorizontal: "1%",
-        marginBottom: 6,
-        minWidth: "42%",
-        textAlign: "center",
-    },
-    selected: {
-        backgroundColor: "coral",
-        borderWidth: 0,
-    },
-    buttonLabel: {
-        fontSize: 12,
-        fontWeight: "500",
-        color: "coral",
-    },
-    selectedLabel: {
-        color: "white",
-    },
-    content: {
-        flex: 1,
-        flexDirection: "row",
-        flexWrap: "wrap",
-        justifyContent: "center",
-    },
-    box: {
-        width: 105,
-        height: 120,
-        padding: 2,
-        backgroundColor: "#F5F5F5",
-        position: "relative",
-    },
-    img: {
-        alignSelf: "center",
-        height: "100%",
-        width: "100%",
-        resizeMode: "stretch",
-    },
-    birdName: {
-        position: "absolute",
-        fontWeight: "600",
-        bottom: 2,
-        left: 4,
-        fontSize: 8,
-    },
-    checkbox: {
-        position: "absolute",
-        left: 0,
-        top: 0,
-    },
-
-    // Modal
-    centeredView: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        marginTop: 22,
-    },
-    modalView: {
-        margin: 20,
-        backgroundColor: "white",
-        position: "relative",
-        borderRadius: 20,
-        padding: 48,
-        alignItems: "center",
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
-        elevation: 5,
-    },
-    buttonClose: {
-        backgroundColor: "#2196F3",
-    },
-    textStyle: {
-        fontSize: 16,
-        fontWeight: "400",
-        color: "#FFFFFF",
-        textAlign: "center",
-    },
-    modalText: {
-        marginBottom: 15,
-        textAlign: "center",
-    },
-});
 
 export default BirdsContainer;

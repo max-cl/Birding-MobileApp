@@ -9,13 +9,14 @@ import BirdsScreen from "./Screens/Birds";
 import WhichBirdScreen from "./Screens/WhichBird";
 import BirdDetailsScreen from "./Screens/BirdDetails";
 import WhichBirdResultScreen from "./Screens/WhichBirdResult";
-import BirdSizeScreen from "./Screens/BirdSize";
+import MapBirdsScreen from "./Screens/MapBirds";
 
 const BirdsStack = createNativeStackNavigator();
 const WhichBirdStack = createNativeStackNavigator();
+const MapBirdsStack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-const HomeStackScreen = () => {
+const BirdsStackScreen = () => {
     return (
         <BirdsStack.Navigator>
             <BirdsStack.Screen
@@ -60,14 +61,21 @@ const WhichBirdStackScreen = () => {
                     title: "Details",
                 }}
             />
-            {/* <WhichBirdStack.Screen
-                name="BirdSize"
-                component={BirdSizeScreen}
-                options={{
-                    title: "Size",
-                }}
-            /> */}
         </WhichBirdStack.Navigator>
+    );
+};
+
+const MapBirdsStackScreen = () => {
+    return (
+        <BirdsStack.Navigator>
+            <BirdsStack.Screen
+                name="MapBirdsScreen"
+                component={MapBirdsScreen}
+                options={{
+                    title: "Map",
+                }}
+            />
+        </BirdsStack.Navigator>
     );
 };
 
@@ -85,6 +93,9 @@ const App = () => {
                         } else if (route.name === "WhichBird") {
                             iconName = focused ? "question" : "question";
                             return <Fontisto name={iconName} size={size} color={color} />;
+                        } else if (route.name === "MapBirds") {
+                            iconName = focused ? "map-marker-alt" : "map-marker-alt";
+                            return <FontAwesome5 name={iconName} size={size} color={color} />;
                         }
 
                         // You can return any component that you like here!
@@ -95,8 +106,9 @@ const App = () => {
                     headerShown: false,
                 })}
             >
-                <Tab.Screen name="Birds" component={HomeStackScreen} options={{ title: "Birds" }} />
+                <Tab.Screen name="Birds" component={BirdsStackScreen} options={{ title: "Birds" }} />
                 <Tab.Screen name="WhichBird" component={WhichBirdStackScreen} options={{ title: "Which Bird?" }} />
+                <Tab.Screen name="MapBirds" component={MapBirdsStackScreen} options={{ title: "Map" }} />
             </Tab.Navigator>
         </NavigationContainer>
     );

@@ -9,6 +9,7 @@ export const BirdsContext = createContext();
 export const BirdsContextProvider = (props) => {
     const [birds, setBirds] = useState([]);
     const [birdColors, setBirdColors] = useState([]);
+    const [birdSizes, setBirdSizes] = useState([]);
 
     useEffect(() => {
         let isMounted = true;
@@ -19,6 +20,8 @@ export const BirdsContextProvider = (props) => {
                     setBirds(birdsFetched.data);
                     const colorsFetched = birdsFetched.data.map((bird) => bird.color);
                     setBirdColors([...new Set(colorsFetched.flat(2))]);
+                    const sizesFetched = birdsFetched.data.map((bird) => bird.size);
+                    setBirdSizes([...new Set(sizesFetched)]);
                 } else {
                     return null;
                 }
@@ -30,25 +33,6 @@ export const BirdsContextProvider = (props) => {
             isMounted = false;
         };
     });
-
-    // useEffect(() => {
-    //     let isMounted = true;
-    //     (async () => {
-    //         try {
-    //             const birdsFetched = await axios.get(`${API_URL}/api/birds`);
-    //             if (isMounted) {
-    //                 setBirds(birdsFetched.data);
-    //             } else {
-    //                 return null;
-    //             }
-    //         } catch (error) {
-    //             console.log("Error Bird-Context: ", error);
-    //         }
-    //     })();
-    //     return () => {
-    //         isMounted = false;
-    //     };
-    // });
 
     const updateBirdChecked = async (birdId) => {
         try {
@@ -73,7 +57,7 @@ export const BirdsContextProvider = (props) => {
     };
 
     return (
-        <BirdsContext.Provider value={{ birds, setBirds, updateBirdChecked, birdColors }}>
+        <BirdsContext.Provider value={{ birds, setBirds, updateBirdChecked, birdColors, birdSizes }}>
             {props.children}
         </BirdsContext.Provider>
     );
