@@ -39,7 +39,7 @@ const CharacteristicName = styled.Text`
 `;
 
 // Components
-import { StyledSafeAreaView, StyledScrollView, CustomImage, StyledContentView, StyledPressable } from "../../Common";
+import { StyledSafeAreaView, StyledScrollView, StyledContentView, StyledPressable, StyledCarousel } from "../../Common";
 
 // Utils
 import imagesUtil from "../../../assets/images/images";
@@ -59,7 +59,7 @@ const BirdDetailsContainer = ({ route }) => {
                     .filter((f) => f.id === birdId)
                     .map((bird) => (
                         <StyledContentView key={bird.id} fDirection="column">
-                            <CustomImage height={260} imgSrc={imagesUtil[`${bird.img}`]} />
+                            <StyledCarousel data={bird.images} />
                             <StyledPressable onPress={() => updateBirdChecked(birdId)}>
                                 <TextButton>{bird.checked ? "Mark as seen" : "No seen"}</TextButton>
                             </StyledPressable>

@@ -3,15 +3,8 @@ import React from "react";
 // Container
 import BirdDetailsContainer from "../../components/Containers/BirdDetails";
 
-// Context
-import { BirdsContextProvider } from "../../context/birds-context";
-
 const BirdDetailsScreen = ({ route }) => {
-    return (
-        <BirdsContextProvider>
-            <BirdDetailsContainer route={route} />
-        </BirdsContextProvider>
-    );
+    return <BirdDetailsContainer route={route} />;
 };
 
 export default BirdDetailsScreen;

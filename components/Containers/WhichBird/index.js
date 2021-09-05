@@ -1,6 +1,5 @@
 import React, { useContext, useState } from "react";
 import { View, Text, Pressable } from "react-native";
-import { AntDesign } from "@expo/vector-icons";
 import styled from "styled-components/native";
 
 // Components
@@ -9,15 +8,18 @@ import { StyledSafeAreaView, StyledScrollView, StyledModal } from "../../Common"
 // Context
 import { BirdsContext } from "../../../context/birds-context";
 
+// Custom Hooks
+import { useToggle } from "../../../custom-hooks";
+
 const StyledPressable = styled(Pressable)`
-    padding: 8px;
+    padding: 16px;
     background-color: ${(props) => (props.selected ? "coral" : "#2196f3")};
     text-align: center;
-    width: 72px;
+    width: 88px;
 `;
 
 const StyledButtonLabel = styled.Text`
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 400;
     color: ${(props) => props.reset || "#ffffff"};
     text-align: center;
@@ -26,9 +28,9 @@ const StyledButtonLabel = styled.Text`
 const StyledPressableColors = styled(Pressable)`
     background-color: ${(props) => props.color};
     border-radius: 50px;
-    width: 64px;
-    height: 64px;
-    margin: 4px;
+    width: 80px;
+    height: 80px;
+    margin: 8px;
     border-color: #c0c0c0;
     border-width: 1px;
 `;
@@ -40,9 +42,10 @@ const StyledContainerResetFilter = styled.View`
 `;
 
 const StyledPressableResetFilter = styled(Pressable)`
-    width: 100px;
+    width: 120px;
     text-align: center;
-    padding: 8px;
+    padding: 16px;
+    background-color: oldlace;
 `;
 
 const StyledContentView = styled.View`
@@ -65,10 +68,10 @@ const StyledRow = styled.View`
 `;
 
 const StyledPressableFind = styled(Pressable)`
-    padding: 8px;
+    padding: 16px;
     background-color: coral;
     text-align: center;
-    width: 96px;
+    width: 240px;
 `;
 
 const StyledFilterNumer = styled.Text`
@@ -77,33 +80,19 @@ const StyledFilterNumer = styled.Text`
 `;
 
 const StyledFilterDescription = styled.Text`
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 200;
 `;
 
 const StyledModalViewColors = ({ children }) => (
     <View
         style={{
-            margin: 0,
             backgroundColor: "white",
             position: "relative",
-            borderRadius: 20,
             alignItems: "center",
-            shadowColor: "#000",
-            shadowOffset: {
-                width: 0,
-                height: 2,
-            },
-            shadowOpacity: 0.25,
-            shadowRadius: 4,
-            elevation: 5,
-            width: 240,
-            height: 400,
             justifyContent: "space-evenly",
             flexDirection: "row",
             flexWrap: "wrap",
-            paddingVertical: 56,
-            paddingHorizontal: 12,
         }}
     >
         {children}
@@ -117,8 +106,8 @@ const WhichBirdContainer = ({ navigation }) => {
     const { birds, birdSizes, birdColors } = useContext(BirdsContext);
     // Local States
     const [filterBird, setFilterBird] = useState({ size: undefined, color: undefined });
-    const [openSizeModal, setOpenSizeModal] = useState(false);
-    const [openColorModal, setOpenColorModal] = useState(false);
+    const [openSizeModal, setOpenSizeModal] = useToggle();
+    const [openColorModal, setOpenColorModal] = useToggle();
 
     const onPressWhichBirdResult = () =>
         navigation.navigate("WhichBirdResult", {
@@ -129,32 +118,24 @@ const WhichBirdContainer = ({ navigation }) => {
         <StyledSafeAreaView>
             <StyledScrollView>
                 {/**  START Size */}
-                <StyledModal openModal={openSizeModal} onRequestClose={() => setOpenSizeModal(!openSizeModal)}>
+                <StyledModal openModal={openSizeModal} onRequestClose={setOpenSizeModal}>
                     {birdSizes.map((size, index) => (
                         <StyledPressable
                             key={index}
                             selected={filterBird.size === size}
                             onPress={() => {
                                 setFilterBird({ ...filterBird, size });
-                                setOpenSizeModal(!openSizeModal);
+                                setOpenSizeModal();
                             }}
                         >
                             <StyledButtonLabel>{size}</StyledButtonLabel>
                         </StyledPressable>
                     ))}
-
-                    <AntDesign
-                        name="closecircle"
-                        size={24}
-                        color="black"
-                        onPress={() => setOpenSizeModal(!openSizeModal)}
-                        style={{ position: "absolute", right: 8, top: 8 }}
-                    />
                 </StyledModal>
                 {/**  END Size */}
 
                 {/**  START Color */}
-                <StyledModal openModal={openColorModal} onRequestClose={() => setOpenColorModal(!openColorModal)}>
+                <StyledModal openModal={openColorModal} onRequestClose={setOpenColorModal}>
                     <StyledModalViewColors>
                         {birdColors.map((color, index) => (
                             <StyledPressableColors
@@ -162,20 +143,12 @@ const WhichBirdContainer = ({ navigation }) => {
                                 color={color}
                                 onPress={() => {
                                     setFilterBird({ ...filterBird, color });
-                                    setOpenColorModal(!openColorModal);
+                                    setOpenColorModal();
                                 }}
                             >
                                 <Text>{"                  "}</Text>
                             </StyledPressableColors>
                         ))}
-
-                        <AntDesign
-                            name="closecircle"
-                            size={24}
-                            color="black"
-                            onPress={() => setOpenColorModal(!openColorModal)}
-                            style={{ position: "absolute", right: 8, top: 8 }}
-                        />
                     </StyledModalViewColors>
                 </StyledModal>
                 {/**  END Color */}
@@ -190,20 +163,14 @@ const WhichBirdContainer = ({ navigation }) => {
                     <StyledRow>
                         <StyledFilterNumer>1</StyledFilterNumer>
                         <StyledFilterDescription> Which size is the bird?</StyledFilterDescription>
-                        <StyledPressable
-                            selected={filterBird.size !== undefined}
-                            onPress={() => setOpenSizeModal(!openSizeModal)}
-                        >
+                        <StyledPressable selected={filterBird.size !== undefined} onPress={setOpenSizeModal}>
                             <StyledButtonLabel>{filterBird.size !== undefined ? "Chosen" : "Choose"}</StyledButtonLabel>
                         </StyledPressable>
                     </StyledRow>
                     <StyledRow>
                         <StyledFilterNumer>2</StyledFilterNumer>
                         <StyledFilterDescription> What color is the bird?</StyledFilterDescription>
-                        <StyledPressable
-                            selected={filterBird.color !== undefined}
-                            onPress={() => setOpenColorModal(!openColorModal)}
-                        >
+                        <StyledPressable selected={filterBird.color !== undefined} onPress={setOpenColorModal}>
                             <StyledButtonLabel>
                                 {filterBird.color !== undefined ? "Chosen" : "Choose"}
                             </StyledButtonLabel>

@@ -2,11 +2,17 @@ import React, { useState, createContext, useEffect } from "react";
 import axios from "axios";
 import { API_URL } from "@env";
 
+// Contexts
+import { useGlobalSpinnerActionsContext } from "../context/spinner-context";
+
 // Create Context Object
 export const BirdsContext = createContext();
 
 // Create a provider for components to consume and subscribe to changes
-export const BirdsContextProvider = (props) => {
+const BirdsContextProvider = (props) => {
+    // Context States
+    const [setGlobalSpinner] = useGlobalSpinnerActionsContext();
+
     const [birds, setBirds] = useState([]);
     const [birdColors, setBirdColors] = useState([]);
     const [birdSizes, setBirdSizes] = useState([]);
@@ -15,6 +21,7 @@ export const BirdsContextProvider = (props) => {
         let isMounted = true;
         (async () => {
             try {
+                setGlobalSpinner(true);
                 const birdsFetched = await axios.get(`${API_URL}/api/birds`);
                 if (isMounted) {
                     setBirds(birdsFetched.data);
@@ -22,6 +29,7 @@ export const BirdsContextProvider = (props) => {
                     setBirdColors([...new Set(colorsFetched.flat(2))]);
                     const sizesFetched = birdsFetched.data.map((bird) => bird.size);
                     setBirdSizes([...new Set(sizesFetched)]);
+                    setGlobalSpinner(false);
                 } else {
                     return null;
                 }
@@ -32,7 +40,7 @@ export const BirdsContextProvider = (props) => {
         return () => {
             isMounted = false;
         };
-    });
+    }, [setGlobalSpinner]);
 
     const updateBirdChecked = async (birdId) => {
         try {
@@ -49,16 +57,22 @@ export const BirdsContextProvider = (props) => {
                 birdId,
                 birdChecked: bird.checked,
             });
+
             setBirds(birdsCopy);
-            console.log("Bird Checked Updated");
+            console.log("Bird Checked Updated: ");
         } catch (error) {
             console.log("Error: ", error);
         }
     };
 
-    return (
-        <BirdsContext.Provider value={{ birds, setBirds, updateBirdChecked, birdColors, birdSizes }}>
-            {props.children}
-        </BirdsContext.Provider>
-    );
+    const birdsSetters = {
+        birds,
+        updateBirdChecked,
+        birdColors,
+        birdSizes,
+    };
+
+    return <BirdsContext.Provider value={{ ...birdsSetters }}>{props.children}</BirdsContext.Provider>;
 };
+
+export default BirdsContextProvider;

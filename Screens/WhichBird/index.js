@@ -1,16 +1,17 @@
 import React from "react";
 
+// Components
+import StyledSpinner from "../../components/Common/StyledSpinner";
+
 // Container
 import WhichBirdContainer from "../../components/Containers/WhichBird";
 
-// Context
-import { BirdsContextProvider } from "../../context/birds-context";
-
 const WhichBirdScreen = ({ route, navigation }) => {
     return (
-        <BirdsContextProvider>
+        <React.Fragment>
+            <StyledSpinner />
             <WhichBirdContainer route={route} navigation={navigation} />
-        </BirdsContextProvider>
+        </React.Fragment>
     );
 };
 

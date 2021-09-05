@@ -4,7 +4,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import styled from "styled-components/native";
 
 // Components
-import { StyledSafeAreaView, StyledScrollView, CustomImage, StyledContentView } from "../../Common";
+import { StyledSafeAreaView, StyledScrollView, CustomImage, StyledContentView, StyledSpinner } from "../../Common";
 
 // Utils
 import imagesUtil from "../../../assets/images/images";
@@ -50,6 +50,7 @@ const WhichBirdResultContainer = ({ route, navigation }) => {
     return (
         <StyledSafeAreaView>
             <StyledScrollView>
+                <StyledSpinner />
                 <StyledContentView>
                     {birds.length > 0 &&
                         birds
@@ -63,7 +64,7 @@ const WhichBirdResultContainer = ({ route, navigation }) => {
                             .map((d) => (
                                 <StyledTouchableOpacity key={d.id} onPress={() => onPressBirdDetails(d.id)}>
                                     <StyledBox>
-                                        <CustomImage height="80%" imgSrc={imagesUtil[`${d.img}`]} />
+                                        <CustomImage height="80%" imgSrc={imagesUtil[`${d.thumbnail}`]} />
                                         <StyledBirdName>{d.name}</StyledBirdName>
                                     </StyledBox>
                                     <StyledMaterialIcons

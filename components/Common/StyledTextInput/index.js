@@ -2,8 +2,8 @@ import React from "react";
 import styled from "styled-components/native";
 
 const ContainerTextInput = styled.TextInput`
-    height: 32px;
-    width: 160px;
+    height: 48px;
+    width: 240px;
     padding: 8px;
     border-color: #c0c0c0;
     border-width: 1px;

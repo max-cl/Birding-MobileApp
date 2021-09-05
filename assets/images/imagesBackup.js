@@ -1,0 +1,26 @@
+// assets/images/images.js
+const imagesUtil = {
+    "common-buzzard": require("./common-buzzard.png"),
+    "scopolis-shearwater": require("./scopolis-shearwater.png"),
+    "petrel-bulwer": require("./petrel-bulwer.png"),
+    "bolles-pigeon": require("./bolles-pigeon.png"),
+    "plain-swift": require("./plain-swift.png"),
+    "barbary-falcon": require("./barbary-falcon.png"),
+    "willow-sparrow": require("./willow-sparrow.png"),
+    "canary-bird": require("./canary-bird.png"),
+    "canary-chiffchaff": require("./canary-chiffchaff.png"),
+    "common-chaffinch": require("./common-chaffinch.png"),
+    "tenerife-blue-chaffinch": require("./tenerife-blue-chaffinch.png"),
+    "osprey-or-fish-eagle": require("./osprey-or-fish-eagle.png"),
+    "rock-sparrow": require("./rock-sparrow.png"),
+    "tenerife-goldcrest": require("./tenerife-goldcrest.png"),
+    "laurel-pigeon": require("./laurel-pigeon.png"),
+    "trumpeter-finch": require("./trumpeter-finch.png"),
+    "african-blue-tit": require("./african-blue-tit.png"),
+    "grey-wagtail": require("./grey-wagtail.png"),
+    "kentish-plover": require("./kentish-plover.png"),
+    "betherlots-pipits": require("./betherlots-pipits.png"),
+    "great-spotted-woodpecker": require("./great-spotted-woodpecker.png"),
+    // "": require("./.png"),
+};
+export default imagesUtil;

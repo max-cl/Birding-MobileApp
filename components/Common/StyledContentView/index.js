@@ -6,6 +6,7 @@ const ContainerContentView = styled.View`
     flex-direction: ${(props) => props.fDirection || "row"};
     flex-wrap: wrap;
     justify-content: center;
+    position: relative;
 `;
 const StyledContentView = ({ children, fDirection }) => {
     return <ContainerContentView fDirection={fDirection}>{children}</ContainerContentView>;
