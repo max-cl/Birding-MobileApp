@@ -3,15 +3,15 @@ import { SafeAreaView, StatusBar, ScrollView, View, StyleSheet, Dimensions, Pres
 import MapView, { Marker } from "react-native-maps";
 
 // Context
-import { BirdsContext } from "../../../context/birds-context";
+import { PlacesContext } from "../../../context/places-context";
 
 const { height, width } = Dimensions.get("window");
-const LATITUDE_DELTA = 1.5;
+const LATITUDE_DELTA = 2.6;
 const LONGITUDE_DELTA = LATITUDE_DELTA * (width / height);
 
-const MapBirdsContainer = ({ navigation }) => {
+const MapPlacesContainer = ({ navigation }) => {
     // Global States
-    const { birds } = useContext(BirdsContext);
+    const { places } = useContext(PlacesContext);
     // Local States
     const [initialRegion, setInitialRegion] = useState({
         latitude: 28.291565,
@@ -22,24 +22,9 @@ const MapBirdsContainer = ({ navigation }) => {
     // Refs
     const _map = useRef(null);
 
-    // useEffect(() => {
-    //     if (_map.current) {
-    //         _map.current.animateCamera(
-    //             {
-    //                 center: {
-    //                     latitude: 28.291565,
-    //                     longitude: -16.629129,
-    //                 },
-    //                 zoom: 8,
-    //             },
-    //             25000
-    //         );
-    //     }
-    // }, []);
-
     const onRegionChange = () => setInitialRegion(initialRegion);
 
-    const onPressBirdDetails = (birdId) => navigation.push("Details", { birdId: birdId });
+    const onPressPlaceDetails = (placeId) => navigation.push("PlaceDetails", { placeId });
 
     return (
         <SafeAreaView style={styles.container}>
@@ -50,39 +35,26 @@ const MapBirdsContainer = ({ navigation }) => {
                         style={styles.map}
                         region={initialRegion}
                         onRegionChange={onRegionChange}
-                        // initialRegion={initialRegion}
-                        // zoomEnabled={true}
-                        // zoomControlEnabled={true}
-                        // showsCompass={true}
-                        // showScale={true}
-                        // showsIndoors={true}
-                        // showsUserLocation
-                        // ScrollEnabled={true}
-                        // showsBuildings={true}
-                        // showsMyLocationButton={false}
+                        initialRegion={initialRegion}
                     >
-                        {birds.map((bird) => (
+                        {places.map((place) => (
                             <Marker
-                                key={bird._id}
-                                identifier={bird._id}
-                                // coordinate={bird.coordinates}
+                                key={place._id}
+                                identifier={place._id}
+                                // coordinate={places.coordinates}
                                 coordinate={{
-                                    latitude: bird.coordinates.latitude,
-                                    longitude: bird.coordinates.longitude,
+                                    latitude: place.coordinates.latitude,
+                                    longitude: place.coordinates.longitude,
                                 }}
-                                title={bird.name}
-                                description={bird.name}
+                                title={place.title}
+                                description={place.description}
                                 onPress={(e) => {
                                     e.stopPropagation();
-                                    console.log("Hola: ", bird.id);
+                                    console.log("Hola: ", place._id);
                                 }}
                                 tracksViewChanges={false}
-                                onCalloutPress={() => onPressBirdDetails(bird.id)}
-                            >
-                                {/* <View style={{ backgroundColor: "red", padding: 10 }}>
-                                    <Text>SF</Text>
-                                </View> */}
-                            </Marker>
+                                onCalloutPress={() => onPressPlaceDetails(place._id)}
+                            />
                         ))}
                     </MapView>
                     <Pressable
@@ -131,4 +103,4 @@ const styles = StyleSheet.create({
         height: Dimensions.get("window").height,
     },
 });
-export default MapBirdsContainer;
+export default MapPlacesContainer;

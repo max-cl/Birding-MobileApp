@@ -7,7 +7,6 @@ const CustomImage = ({ height, imgSrc }) => {
         return (
             <View style={styles.container}>
                 <Text style={{ textAlign: "center" }}>Image not found</Text>
-
                 <MaterialCommunityIcons
                     style={{ textAlign: "center" }}
                     name="emoticon-sad-outline"
@@ -35,7 +34,7 @@ const styles = StyleSheet.create({
     },
     img: {
         alignSelf: "center",
-        width: "80%",
+        width: "100%",
         resizeMode: "stretch",
     },
 });

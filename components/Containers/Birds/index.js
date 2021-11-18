@@ -1,6 +1,6 @@
 import React, { useState, useLayoutEffect, useContext } from "react";
-import { MaterialIcons, FontAwesome, FontAwesome5, AntDesign } from "@expo/vector-icons";
-import { View } from "react-native";
+import { MaterialIcons, FontAwesome, FontAwesome5 } from "@expo/vector-icons";
+import { View, Pressable } from "react-native";
 import styled from "styled-components/native";
 
 // Components
@@ -11,7 +11,6 @@ import {
     StyledContentView,
     StyledModal,
     StyledTextInput,
-    StyledPressable,
     StyledSpinner,
 } from "../../Common";
 
@@ -20,6 +19,7 @@ import imagesUtil from "../../../assets/images/images";
 
 // Context
 import { BirdsContext } from "../../../context/birds-context";
+import { UserContext } from "../../../context/user-context";
 
 // Custom Hooks
 import { useToggle } from "../../../custom-hooks";
@@ -69,6 +69,11 @@ const StyledBirdName = styled.Text`
     font-size: 8px;
 `;
 
+const StyledPressableResetFilter = styled(Pressable)`
+    padding: 16px;
+    background-color: oldlace;
+`;
+
 const options = ["All Birds", "Birds I've seen"];
 const BirdsContainer = ({ navigation }) => {
     // Local States
@@ -79,6 +84,7 @@ const BirdsContainer = ({ navigation }) => {
     const [searchBird, setSearchBird] = useState("");
     // Global States
     const { birds } = useContext(BirdsContext);
+    const { user } = useContext(UserContext);
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -109,9 +115,9 @@ const BirdsContainer = ({ navigation }) => {
                             value={searchBird}
                             onChangeText={setSearchBird}
                         />
-                        <StyledPressable onPress={() => setSearchBird("")}>
+                        <StyledPressableResetFilter onPress={() => setSearchBird("")}>
                             <StyledButtonLabel>Reset</StyledButtonLabel>
-                        </StyledPressable>
+                        </StyledPressableResetFilter>
                     </View>
                 </StyledModal>
 
@@ -138,31 +144,48 @@ const BirdsContainer = ({ navigation }) => {
                                     .sort((a, b) => (orderBy ? a.name < b.name : a.name > b.name))
                                     .filter((b) => b.name.toUpperCase().includes(searchBird.toUpperCase()))
                                     .map((d) => (
-                                        <StyledTouchableOpacity key={d.id} onPress={() => onPressBirdDetails(d.id)}>
+                                        <StyledTouchableOpacity key={d._id} onPress={() => onPressBirdDetails(d._id)}>
                                             <StyledBox>
                                                 <CustomImage height="80%" imgSrc={imagesUtil[`${d.thumbnail}`]} />
                                                 <StyledBirdName>{d.name}</StyledBirdName>
                                             </StyledBox>
-                                            <StyledMaterialIcons
-                                                size={16}
-                                                color="coral"
-                                                name={d.checked ? "check-box" : ""}
-                                            />
+                                            {Object.keys(user).length > 0 &&
+                                                user.data
+                                                    .filter((f) => f.birdId === d._id)
+                                                    .map((b) => (
+                                                        <StyledMaterialIcons
+                                                            key={b.birdId}
+                                                            size={16}
+                                                            color="coral"
+                                                            name={b.checked ? "check-box" : ""}
+                                                        />
+                                                    ))}
                                         </StyledTouchableOpacity>
                                     ))}
                             </StyledContentView>
                         ) : (
                             <StyledContentView>
-                                {birds
-                                    .sort((a, b) => (orderBy ? a.name < b.name : a.name > b.name))
-                                    .filter((f) => f.checked === showSeen)
-                                    .map((d) => (
-                                        <StyledTouchableOpacity key={d.id} onPress={() => onPressBirdDetails(d.id)}>
-                                            <StyledBox>
-                                                <CustomImage height="100%" imgSrc={imagesUtil[`${d.thumbnail}`]} />
-                                                <StyledBirdName>{d.name}</StyledBirdName>
-                                            </StyledBox>
-                                        </StyledTouchableOpacity>
+                                {Object.keys(user).length > 0 &&
+                                    user.data.map((u) => (
+                                        <React.Fragment key={u.birdId}>
+                                            {birds
+                                                .sort((a, b) => (orderBy ? a.name < b.name : a.name > b.name))
+                                                .filter((f) => f._id === u.birdId && u.checked === showSeen)
+                                                .map((d) => (
+                                                    <StyledTouchableOpacity
+                                                        key={d._id}
+                                                        onPress={() => onPressBirdDetails(d._id)}
+                                                    >
+                                                        <StyledBox>
+                                                            <CustomImage
+                                                                height="80%"
+                                                                imgSrc={imagesUtil[`${d.thumbnail}`]}
+                                                            />
+                                                            <StyledBirdName>{d.name}</StyledBirdName>
+                                                        </StyledBox>
+                                                    </StyledTouchableOpacity>
+                                                ))}
+                                        </React.Fragment>
                                     ))}
                             </StyledContentView>
                         )}

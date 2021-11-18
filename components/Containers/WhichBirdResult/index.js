@@ -11,6 +11,7 @@ import imagesUtil from "../../../assets/images/images";
 
 // Context
 import { BirdsContext } from "../../../context/birds-context";
+import { UserContext } from "../../../context/user-context";
 
 const StyledTouchableOpacity = styled(TouchableOpacity)``;
 
@@ -34,6 +35,7 @@ const StyledMaterialIcons = styled(MaterialIcons)`
     position: absolute;
     left: 0;
     top: 0;
+    z-index: 2;
 `;
 
 const WhichBirdResultContainer = ({ route, navigation }) => {
@@ -41,6 +43,7 @@ const WhichBirdResultContainer = ({ route, navigation }) => {
     const { filterBird } = route.params;
     // Global States
     const { birds } = useContext(BirdsContext);
+    const { user } = useContext(UserContext);
 
     const onPressBirdDetails = (birdId) =>
         navigation.push("Details", {
@@ -62,16 +65,22 @@ const WhichBirdResultContainer = ({ route, navigation }) => {
                             )
                             .filter((f) => (filterBird.color === undefined ? true : f.color.includes(filterBird.color)))
                             .map((d) => (
-                                <StyledTouchableOpacity key={d.id} onPress={() => onPressBirdDetails(d.id)}>
+                                <StyledTouchableOpacity key={d._id} onPress={() => onPressBirdDetails(d._id)}>
                                     <StyledBox>
                                         <CustomImage height="80%" imgSrc={imagesUtil[`${d.thumbnail}`]} />
                                         <StyledBirdName>{d.name}</StyledBirdName>
+                                        {Object.keys(user).length > 0 &&
+                                            user.data
+                                                .filter((f) => f.birdId === d._id)
+                                                .map((b) => (
+                                                    <StyledMaterialIcons
+                                                        key={b.birdId}
+                                                        size={16}
+                                                        color="coral"
+                                                        name={b.checked ? "check-box" : ""}
+                                                    />
+                                                ))}
                                     </StyledBox>
-                                    <StyledMaterialIcons
-                                        size={16}
-                                        color={"coral"}
-                                        name={d.checked ? "check-box" : ""}
-                                    />
                                 </StyledTouchableOpacity>
                             ))}
                 </StyledContentView>

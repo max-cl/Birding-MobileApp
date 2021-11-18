@@ -1,8 +1,9 @@
 import React, { useContext } from "react";
 import styled from "styled-components/native";
+import { View } from "react-native";
 
 const TextButton = styled.Text`
-    color: #ffffff;
+    color: white;
     font-size: 16px;
     font-weight: 800;
     text-align: center;
@@ -27,10 +28,16 @@ const TextDescription = styled.Text`
 `;
 
 const ContainerCharacteristics = styled.View`
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: flex-start;
     padding: 8px 16px;
+`;
+
+const ContentCharacteristics = styled.View`
+    flex: 1;
+    flex-direction: row;
+    margin-bottom: 8px;
 `;
 
 const CharacteristicName = styled.Text`
@@ -41,36 +48,56 @@ const CharacteristicName = styled.Text`
 // Components
 import { StyledSafeAreaView, StyledScrollView, StyledContentView, StyledPressable, StyledCarousel } from "../../Common";
 
-// Utils
-import imagesUtil from "../../../assets/images/images";
-
 // Context
 import { BirdsContext } from "../../../context/birds-context";
+import { UserContext } from "../../../context/user-context";
 
 const BirdDetailsContainer = ({ route }) => {
     const { birdId } = route.params;
     // Global State
-    const { birds, updateBirdChecked } = useContext(BirdsContext);
+    const { birds } = useContext(BirdsContext);
+    const { user, updateUserBirdChecked } = useContext(UserContext);
 
     return (
         <StyledSafeAreaView>
             <StyledScrollView>
                 {birds
-                    .filter((f) => f.id === birdId)
+                    .filter((f) => f._id === birdId)
                     .map((bird) => (
-                        <StyledContentView key={bird.id} fDirection="column">
+                        <StyledContentView key={bird._id} fDirection="column">
                             <StyledCarousel data={bird.images} />
-                            <StyledPressable onPress={() => updateBirdChecked(birdId)}>
-                                <TextButton>{bird.checked ? "Mark as seen" : "No seen"}</TextButton>
-                            </StyledPressable>
+                            {Object.keys(user).length > 0 &&
+                                user.data
+                                    .filter((f) => f.birdId === bird._id)
+                                    .map((b) => (
+                                        <StyledPressable
+                                            key={b.birdId}
+                                            onPress={() => updateUserBirdChecked(birdId)}
+                                            seen={b.checked}
+                                        >
+                                            <TextButton seen={b.checked}>
+                                                {b.checked ? "Mark as seen" : "No seen"}
+                                            </TextButton>
+                                        </StyledPressable>
+                                    ))}
                             <ContainerText>
                                 <TextBirdName>{bird.name}</TextBirdName>
                                 <TextDescription>{bird.description}</TextDescription>
                             </ContainerText>
 
                             <ContainerCharacteristics>
-                                <CharacteristicName>Size: </CharacteristicName>
-                                <TextDescription>{bird.size}</TextDescription>
+                                <ContentCharacteristics>
+                                    <CharacteristicName>Size: </CharacteristicName>
+                                    <TextDescription>{bird.size}</TextDescription>
+                                </ContentCharacteristics>
+                                <ContentCharacteristics>
+                                    <CharacteristicName>Lenght: </CharacteristicName>
+                                    <TextDescription>{bird.information.length}</TextDescription>
+                                </ContentCharacteristics>
+                                <ContentCharacteristics>
+                                    <CharacteristicName>Wingspan: </CharacteristicName>
+                                    <TextDescription>{bird.information.wingspan}</TextDescription>
+                                </ContentCharacteristics>
                             </ContainerCharacteristics>
                         </StyledContentView>
                     ))}

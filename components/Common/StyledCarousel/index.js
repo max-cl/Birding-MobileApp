@@ -30,11 +30,11 @@ const StyledCarousel = ({ data = [] }) => {
                 style={{
                     backgroundColor: "white",
                     // borderRadius: 20,
-                    height: 400,
-                    // padding: 50,
+                    height: 420,
+                    // paddingVertical: 8,
                 }}
             >
-                <CustomImage height="80%" imgSrc={imagesUtil[`${item}`]} />
+                <CustomImage height="100%" imgSrc={imagesUtil[`${item}`]} />
             </TouchableOpacity>
         );
     };
@@ -50,12 +50,12 @@ const StyledCarousel = ({ data = [] }) => {
                     width: "100%",
                 }}
                 dotStyle={{
-                    width: 6,
-                    height: 6,
+                    width: 8,
+                    height: 8,
                     borderRadius: 5,
                     marginHorizontal: 0,
-                    backgroundColor: "rgba(0, 0, 0, 0.75)",
-                    top: 52,
+                    backgroundColor: "rgba(255, 255, 255, 1)",
+                    top: 40,
                 }}
                 inactiveDotStyle={
                     {
@@ -75,8 +75,8 @@ const StyledCarousel = ({ data = [] }) => {
                 ref={carouselRef}
                 data={data}
                 sliderWidth={SliderWidth}
-                itemWidth={400}
-                layoutCardOffset={9}
+                itemWidth={420}
+                layoutCardOffset={8}
                 renderItem={_renderItem}
                 useScrollView
                 onSnapToItem={(index) => setActivateIndex(index)}

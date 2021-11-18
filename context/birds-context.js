@@ -22,7 +22,7 @@ const BirdsContextProvider = (props) => {
         (async () => {
             try {
                 setGlobalSpinner(true);
-                const birdsFetched = await axios.get(`${API_URL}/api/birds`);
+                const birdsFetched = await axios.get(`${API_URL}/bird`);
                 if (isMounted) {
                     setBirds(birdsFetched.data);
                     const colorsFetched = birdsFetched.data.map((bird) => bird.color);
