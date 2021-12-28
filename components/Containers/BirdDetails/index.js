@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 import styled from "styled-components/native";
-import { View } from "react-native";
 
 const TextButton = styled.Text`
     color: white;

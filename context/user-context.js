@@ -18,29 +18,29 @@ const UserContextProvider = (props) => {
 
     useEffect(() => {
         let isMounted = true;
-        // SecureStore.deleteItemAsync("token");
+        // cleanTokenFromSecureStore();
         (async () => {
             try {
                 setGlobalSpinner(true);
                 const token = await SecureStore.getItemAsync(KEY_SCURE_STORE);
                 if (token) {
-                    // console.log("🔐 Here's your value 🔐 \n" + token);
+                    console.log("🔐 Here's your value 🔐 \n" + token);
                     const birdsFetched = await axios.get(`${API_URL}/user/${token}`);
                     if (isMounted) {
                         setUser(birdsFetched.data);
                         setGlobalSpinner(false);
-                        // console.log("UserBirds Fetched: ", birdsFetched.data.data);
+                        console.log("UserBirds Fetched: ", birdsFetched.data.data);
                     } else {
                         return null;
                     }
                 } else {
-                    // console.log("No values stored under that key.");
+                    console.log("No values stored under that key.");
                     const userBirdsCreated = await axios.post(`${API_URL}/user`, {});
                     if (isMounted) {
                         await SecureStore.setItemAsync(KEY_SCURE_STORE, `${userBirdsCreated.data.token}`);
                         setUser(userBirdsCreated.data.data);
                         setGlobalSpinner(false);
-                        // console.log("UserBirds Created: ", userBirdsCreated.data);
+                        console.log("UserBirds Created: ", userBirdsCreated.data);
                     } else {
                         return null;
                     }
@@ -53,6 +53,11 @@ const UserContextProvider = (props) => {
             isMounted = false;
         };
     }, [setGlobalSpinner]);
+
+    const cleanTokenFromSecureStore = () => {
+        SecureStore.deleteItemAsync("token");
+        console.log("Token deleted");
+    };
 
     const updateUserBirdChecked = async (birdId) => {
         try {
@@ -70,7 +75,6 @@ const UserContextProvider = (props) => {
                 birdId,
                 checked: bird.checked,
             });
-
             setUser(userCopy);
             console.log("User Bird Checked Updated: ");
         } catch (error) {

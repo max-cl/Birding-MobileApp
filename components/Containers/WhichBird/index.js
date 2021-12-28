@@ -99,7 +99,7 @@ const StyledModalViewColors = ({ children }) => (
     </View>
 );
 
-const SizeOptions = ["small", "medium", "big"];
+// const SizeOptions = ["small", "medium", "big"];
 
 const WhichBirdContainer = ({ navigation }) => {
     // Global State
@@ -171,9 +171,7 @@ const WhichBirdContainer = ({ navigation }) => {
                         <StyledFilterNumer>2</StyledFilterNumer>
                         <StyledFilterDescription> What color is the bird?</StyledFilterDescription>
                         <StyledPressable selected={filterBird.color !== undefined} onPress={setOpenColorModal}>
-                            <StyledButtonLabel>
-                                {filterBird.color !== undefined ? "Chosen" : "Choose"}
-                            </StyledButtonLabel>
+                            <StyledButtonLabel>{filterBird.color !== undefined ? "Chosen" : "Choose"}</StyledButtonLabel>
                         </StyledPressable>
                     </StyledRow>
                     <StyledRow find={true}>
@@ -183,13 +181,9 @@ const WhichBirdContainer = ({ navigation }) => {
                                 {`${
                                     birds
                                         .filter((f) =>
-                                            filterBird.size === undefined
-                                                ? true
-                                                : f.size.toUpperCase() === filterBird.size.toUpperCase()
+                                            filterBird.size === undefined ? true : f.size.toUpperCase() === filterBird.size.toUpperCase()
                                         )
-                                        .filter((f) =>
-                                            filterBird.color === undefined ? true : f.color.includes(filterBird.color)
-                                        ).length
+                                        .filter((f) => (filterBird.color === undefined ? true : f.color.includes(filterBird.color))).length
                                 } results`}
                             </StyledButtonLabel>
                         </StyledPressableFind>

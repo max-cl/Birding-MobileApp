@@ -1,13 +1,6 @@
 import React, { useContext } from "react";
 import styled from "styled-components/native";
 
-const TextButton = styled.Text`
-    color: white;
-    font-size: 16px;
-    font-weight: 800;
-    text-align: center;
-`;
-
 const ContainerText = styled.View`
     padding: 16px 16px 8px;
     justify-content: space-between;
