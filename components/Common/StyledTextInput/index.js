@@ -2,11 +2,11 @@ import React from "react";
 import styled from "styled-components/native";
 
 const ContainerTextInput = styled.TextInput`
-    height: 48px;
-    width: 240px;
-    padding: 8px;
-    border-color: #c0c0c0;
-    border-width: 1px;
+    height: ${(props) => props.theme.height * 6}px;
+    width: ${(props) => props.theme.width * 30}px;
+    padding: ${(props) => props.theme.padding}px;
+    border-color: ${(props) => props.theme.borderColor};
+    border-width: ${(props) => props.theme.borderWidth}px;
 `;
 
 const StyledTextInput = ({ children, placeholder, value, onChangeText }) => {

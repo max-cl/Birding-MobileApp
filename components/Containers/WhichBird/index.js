@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { View, Text, Pressable } from "react-native";
+import { View, Pressable } from "react-native";
 import styled from "styled-components/native";
 
 // Components
@@ -12,48 +12,47 @@ import { BirdsContext } from "../../../context/birds-context";
 import { useToggle } from "../../../custom-hooks";
 
 const StyledPressable = styled(Pressable)`
-    padding: 16px;
-    background-color: ${(props) => (props.selected ? "coral" : "#2196f3")};
+    padding: ${(props) => props.theme.padding * 2}px;
+    background-color: ${(props) => (props.selected ? props.theme.primaryColor : props.theme.tertiaryColor)};
+    width: ${(props) => props.theme.width * 11}px;
     text-align: center;
-    width: 88px;
 `;
 
 const StyledButtonLabel = styled.Text`
-    font-size: 14px;
-    font-weight: 400;
-    color: ${(props) => props.reset || "#ffffff"};
+    font-size: ${(props) => props.theme.fontSize * 1.75}px;
+    color: ${(props) => props.reset || props.theme.white};
     text-align: center;
 `;
 
 const StyledPressableColors = styled(Pressable)`
     background-color: ${(props) => props.color};
-    border-radius: 50px;
-    width: 80px;
-    height: 80px;
-    margin: 8px;
-    border-color: #c0c0c0;
-    border-width: 1px;
+    border-radius: ${(props) => props.theme.borderRadius * 5}px;
+    width: ${(props) => props.theme.width * 10}px;
+    height: ${(props) => props.theme.height * 10}px;
+    margin: ${(props) => props.theme.margin}px;
+    border-color: ${(props) => props.theme.borderColor};
+    border-width: ${(props) => props.theme.borderWidth}px;
 `;
 
 const StyledContainerResetFilter = styled.View`
     position: absolute;
-    top: 24px;
-    right: 16px;
+    top: ${(props) => props.theme.margin * 2}px;
+    right: ${(props) => props.theme.margin * 2}px;
 `;
 
 const StyledPressableResetFilter = styled(Pressable)`
-    width: 120px;
+    width: ${(props) => props.theme.width * 20}px;
     text-align: center;
-    padding: 16px;
-    background-color: oldlace;
+    padding: ${(props) => props.theme.padding * 2}px;
+    background-color: ${(props) => props.theme.secondaryColor};
 `;
 
 const StyledContentView = styled.View`
     flex: 1;
     flex-direction: column;
     justify-content: center;
-    margin-top: 80px;
-    padding: 16px;
+    margin-top: ${(props) => props.theme.margin * 10}px;
+    padding: ${(props) => props.theme.padding * 2}px;
 `;
 
 const StyledRow = styled.View`
@@ -61,27 +60,26 @@ const StyledRow = styled.View`
     flex-direction: row;
     justify-content: space-around;
     align-items: center;
-    border-width: ${(props) => (props.find ? "0" : "1px")};
-    border-color: ${(props) => (props.find ? "#FFFFFF" : "#e0e0e0")};
-    padding: 12px;
-    margin-top: 24px;
+    border-width: ${(props) => (props.find ? 0 : 1)}px;
+    border-color: ${(props) => (props.find ? props.theme.white : props.theme.bgColor)};
+    padding: ${(props) => props.theme.padding * 1.5}px;
+    margin-top: ${(props) => props.theme.margin * 4}px;
 `;
 
 const StyledPressableFind = styled(Pressable)`
-    padding: 16px;
-    background-color: coral;
+    padding: ${(props) => props.theme.padding * 2}px;
+    background-color: ${(props) => props.theme.primaryColor};
     text-align: center;
-    width: 240px;
+    width: ${(props) => props.theme.width * 30}px;
 `;
 
 const StyledFilterNumer = styled.Text`
-    font-size: 24px;
-    font-weight: 600;
+    font-size: ${(props) => props.theme.fontSize * 3}px;
 `;
 
 const StyledFilterDescription = styled.Text`
-    font-size: 14px;
-    font-weight: 200;
+    font-size: ${(props) => props.theme.fontSize * 1.75}px;
+    font-weight: ${(props) => props.theme.fontWeight * 2};
 `;
 
 const StyledModalViewColors = ({ children }) => (
@@ -145,9 +143,7 @@ const WhichBirdContainer = ({ navigation }) => {
                                     setFilterBird({ ...filterBird, color });
                                     setOpenColorModal();
                                 }}
-                            >
-                                <Text>{"                  "}</Text>
-                            </StyledPressableColors>
+                            ></StyledPressableColors>
                         ))}
                     </StyledModalViewColors>
                 </StyledModal>
@@ -171,7 +167,9 @@ const WhichBirdContainer = ({ navigation }) => {
                         <StyledFilterNumer>2</StyledFilterNumer>
                         <StyledFilterDescription> What color is the bird?</StyledFilterDescription>
                         <StyledPressable selected={filterBird.color !== undefined} onPress={setOpenColorModal}>
-                            <StyledButtonLabel>{filterBird.color !== undefined ? "Chosen" : "Choose"}</StyledButtonLabel>
+                            <StyledButtonLabel>
+                                {filterBird.color !== undefined ? "Chosen" : "Choose"}
+                            </StyledButtonLabel>
                         </StyledPressable>
                     </StyledRow>
                     <StyledRow find={true}>
@@ -181,9 +179,13 @@ const WhichBirdContainer = ({ navigation }) => {
                                 {`${
                                     birds
                                         .filter((f) =>
-                                            filterBird.size === undefined ? true : f.size.toUpperCase() === filterBird.size.toUpperCase()
+                                            filterBird.size === undefined
+                                                ? true
+                                                : f.size.toUpperCase() === filterBird.size.toUpperCase()
                                         )
-                                        .filter((f) => (filterBird.color === undefined ? true : f.color.includes(filterBird.color))).length
+                                        .filter((f) =>
+                                            filterBird.color === undefined ? true : f.color.includes(filterBird.color)
+                                        ).length
                                 } results`}
                             </StyledButtonLabel>
                         </StyledPressableFind>

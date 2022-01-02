@@ -10,7 +10,7 @@ import imagesUtil from "../../../assets/images/images";
 
 const SliderWidth = Dimensions.get("screen").width;
 
-const StyledCarousel = ({ data = [] }) => {
+const StyledCarousel = ({ data = [], topDots = 40 }) => {
     // Local States
     const [activeIndex, setActivateIndex] = useState(0);
     // Ref
@@ -50,20 +50,23 @@ const StyledCarousel = ({ data = [] }) => {
                     width: "100%",
                 }}
                 dotStyle={{
+                    // Define styles for active dots
+                    width: 14,
+                    height: 14,
+                    borderRadius: 10,
+                    marginHorizontal: 0,
+                    backgroundColor: "rgba(228, 113, 122, 1)",
+                    top: topDots,
+                }}
+                inactiveDotStyle={{
+                    // Define styles for inactive dots
                     width: 8,
                     height: 8,
                     borderRadius: 5,
-                    marginHorizontal: 0,
                     backgroundColor: "rgba(255, 255, 255, 1)",
-                    top: 40,
                 }}
-                inactiveDotStyle={
-                    {
-                        // Define styles for inactive dots here
-                    }
-                }
-                inactiveDotOpacity={0.4}
-                inactiveDotScale={0.6}
+                inactiveDotOpacity={1}
+                inactiveDotScale={1}
             />
         );
     };

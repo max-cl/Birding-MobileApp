@@ -16,26 +16,24 @@ import { UserContext } from "../../../context/user-context";
 const StyledTouchableOpacity = styled(TouchableOpacity)``;
 
 const StyledBox = styled.View`
-    width: 100px;
-    height: 100px;
-    padding: 2px;
-    background-color: #f0f0f0;
+    width: ${(props) => props.theme.width * 17}px;
+    height: ${(props) => props.theme.height * 17}px;
+    padding: ${(props) => props.theme.padding / 4}px;
     position: relative;
 `;
 
 const StyledBirdName = styled.Text`
     position: absolute;
-    font-weight: 600;
-    bottom: 2px;
-    left: 4px;
-    font-size: 8px;
+    font-weight: ${(props) => props.theme.fontWeight * 6};
+    bottom: ${(props) => props.theme.margin / 4}px;
+    left: ${(props) => props.theme.margin / 2}px;
+    font-size: ${(props) => props.theme.fontSize * 1.25}px;
 `;
 
 const StyledMaterialIcons = styled(MaterialIcons)`
     position: absolute;
     left: 0;
     top: 0;
-    z-index: 2;
 `;
 
 const WhichBirdResultContainer = ({ route, navigation }) => {

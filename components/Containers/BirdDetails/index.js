@@ -2,46 +2,45 @@ import React, { useContext } from "react";
 import styled from "styled-components/native";
 
 const TextButton = styled.Text`
-    color: white;
-    font-size: 16px;
-    font-weight: 800;
+    color: ${(props) => props.theme.white};
+    font-size: ${(props) => props.theme.fontSize * 2}px;
+    font-weight: ${(props) => props.theme.fontWeight * 8};
+    text-transform: uppercase;
     text-align: center;
 `;
 
 const ContainerText = styled.View`
-    padding: 16px 16px 8px;
+    padding: ${(props) => props.theme.padding * 2}px ${(props) => props.theme.padding * 2}px
+        ${(props) => props.theme.padding / 2}px;
     justify-content: space-between;
 `;
 
 const TextBirdName = styled.Text`
-    font-size: 20px;
-    font-weight: 600;
+    font-size: ${(props) => props.theme.fontSize * 2}px;
+    font-weight: ${(props) => props.theme.fontWeight * 6};
     text-align: center;
-    margin-bottom: 16px;
+    margin-bottom: ${(props) => props.theme.margin * 2}px;
+    text-transform: uppercase;
 `;
 
 const TextDescription = styled.Text`
-    font-size: 12px;
-    font-weight: 400;
+    font-size: ${(props) => props.theme.fontSize * 1.5}px;
     text-align: justify;
 `;
 
 const ContainerCharacteristics = styled.View`
-    flex-direction: column;
-    justify-content: space-evenly;
-    align-items: flex-start;
-    padding: 8px 16px;
+    padding: ${(props) => props.theme.padding * 2}px;
 `;
 
 const ContentCharacteristics = styled.View`
     flex: 1;
     flex-direction: row;
-    margin-bottom: 8px;
+    margin-bottom: ${(props) => props.theme.margin}px;
 `;
 
 const CharacteristicName = styled.Text`
-    font-size: 12px;
-    font-weight: 800;
+    font-size: ${(props) => props.theme.fontSize * 1.5}px;
+    font-weight: ${(props) => props.theme.fontWeight * 8};
 `;
 
 // Components

@@ -18,12 +18,12 @@ const BirdsContextProvider = (props) => {
     const [birdSizes, setBirdSizes] = useState([]);
 
     useEffect(() => {
+        // console.log("Birds Context");
         let isMounted = true;
         (async () => {
             try {
                 setGlobalSpinner(true);
                 const birdsFetched = await axios.get(`${API_URL}/bird`);
-                // console.log({ birdsFetched });
                 if (isMounted) {
                     setBirds(birdsFetched.data);
                     const colorsFetched = birdsFetched.data.map((bird) => bird.color);

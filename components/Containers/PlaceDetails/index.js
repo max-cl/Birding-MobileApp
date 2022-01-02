@@ -2,20 +2,21 @@ import React, { useContext } from "react";
 import styled from "styled-components/native";
 
 const ContainerText = styled.View`
-    padding: 16px 16px 8px;
+    padding: ${(props) => props.theme.padding * 2}px ${(props) => props.theme.padding * 2}px
+        ${(props) => props.theme.padding}px;
     justify-content: space-between;
 `;
 
 const TextTitle = styled.Text`
-    font-size: 20px;
-    font-weight: 600;
+    font-size: ${(props) => props.theme.fontSize * 2}px;
+    font-weight: ${(props) => props.theme.fontWeight * 6};
     text-align: center;
-    margin-bottom: 16px;
+    margin-bottom: ${(props) => props.theme.margin * 2}px;
+    text-transform: uppercase;
 `;
 
 const TextDescription = styled.Text`
-    font-size: 12px;
-    font-weight: 400;
+    font-size: ${(props) => props.theme.fontSize * 1.5}px;
     text-align: justify;
 `;
 
@@ -37,7 +38,7 @@ const PlaceDetailsContainer = ({ route }) => {
                     .filter((f) => f._id === placeId)
                     .map((place) => (
                         <StyledContentView key={place._id} fDirection="column">
-                            <StyledCarousel data={place.images} />
+                            <StyledCarousel data={place.images} topDots={128} />
                             <ContainerText>
                                 <TextTitle>{place.title}</TextTitle>
                                 <TextDescription>{place.description}</TextDescription>

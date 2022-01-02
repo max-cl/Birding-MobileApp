@@ -1,11 +1,39 @@
 import React, { useContext, useState, useRef } from "react";
-import { SafeAreaView, StatusBar, ScrollView, View, StyleSheet, Dimensions, Pressable, Text } from "react-native";
+import { Dimensions, Pressable } from "react-native";
 import MapView, { Marker } from "react-native-maps";
+import styled from "styled-components/native";
 
 // Context
 import { PlacesContext } from "../../../context/places-context";
 
+// Common
+import { StyledSafeAreaView, StyledScrollView } from "../../Common";
 const { height, width } = Dimensions.get("window");
+
+const StyledContainerReset = styled.View`
+    position: absolute;
+    top: ${(props) => props.theme.margin * 2}px;
+    right: ${(props) => props.theme.margin * 2}px;
+`;
+
+const StyledPressableReset = styled(Pressable)`
+    width: ${(props) => props.theme.width * 20}px;
+    text-align: center;
+    padding: ${(props) => props.theme.padding * 2}px;
+    background-color: ${(props) => props.theme.tertiaryColor};
+`;
+
+const StyledButtonLabel = styled.Text`
+    font-size: ${(props) => props.theme.fontSize * 1.75}px;
+    color: ${(props) => props.theme.white};
+    text-align: center;
+`;
+
+const StyledMapView = styled(MapView)`
+    width: ${width}px;
+    height: ${height}px;
+`;
+
 const LATITUDE_DELTA = 2.6;
 const LONGITUDE_DELTA = LATITUDE_DELTA * (width / height);
 
@@ -27,47 +55,37 @@ const MapPlacesContainer = ({ navigation }) => {
     const onPressPlaceDetails = (placeId) => navigation.push("PlaceDetails", { placeId });
 
     return (
-        <SafeAreaView style={styles.container}>
-            <ScrollView style={styles.scrollView}>
-                <View style={styles.content}>
-                    <MapView
-                        ref={_map}
-                        style={styles.map}
-                        region={initialRegion}
-                        onRegionChange={onRegionChange}
-                        initialRegion={initialRegion}
-                    >
-                        {places.map((place) => (
-                            <Marker
-                                key={place._id}
-                                identifier={place._id}
-                                // coordinate={places.coordinates}
-                                coordinate={{
-                                    latitude: place.coordinates.latitude,
-                                    longitude: place.coordinates.longitude,
-                                }}
-                                title={place.title}
-                                description={place.description}
-                                onPress={(e) => {
-                                    e.stopPropagation();
-                                    console.log("Hola: ", place._id);
-                                }}
-                                tracksViewChanges={false}
-                                onCalloutPress={() => onPressPlaceDetails(place._id)}
-                            />
-                        ))}
-                    </MapView>
-                    <Pressable
-                        style={{
-                            position: "absolute",
-                            backgroundColor: "#C0C0C0",
-                            width: 64,
-                            height: 32,
-                            justifyContent: "center",
-                            alignItems: "center",
-                            top: 24,
-                            left: 24,
-                        }}
+        <StyledSafeAreaView>
+            <StyledScrollView>
+                <StyledMapView
+                    ref={_map}
+                    region={initialRegion}
+                    onRegionChange={onRegionChange}
+                    initialRegion={initialRegion}
+                >
+                    {places.map((place) => (
+                        <Marker
+                            key={place._id}
+                            identifier={place._id}
+                            // coordinate={places.coordinates}
+                            coordinate={{
+                                latitude: place.coordinates.latitude,
+                                longitude: place.coordinates.longitude,
+                            }}
+                            title={place.title}
+                            description={place.description}
+                            onPress={(e) => {
+                                e.stopPropagation();
+                                console.log("Hola: ", place._id);
+                            }}
+                            tracksViewChanges={false}
+                            onCalloutPress={() => onPressPlaceDetails(place._id)}
+                        />
+                    ))}
+                </StyledMapView>
+
+                <StyledContainerReset>
+                    <StyledPressableReset
                         onPress={() =>
                             setInitialRegion({
                                 latitude: 28.291565,
@@ -77,30 +95,12 @@ const MapPlacesContainer = ({ navigation }) => {
                             })
                         }
                     >
-                        <Text style={{ color: "blue", fontWeight: "800" }}>Reset</Text>
-                    </Pressable>
-                </View>
-            </ScrollView>
-        </SafeAreaView>
+                        <StyledButtonLabel>Reset</StyledButtonLabel>
+                    </StyledPressableReset>
+                </StyledContainerReset>
+            </StyledScrollView>
+        </StyledSafeAreaView>
     );
 };
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        paddingTop: StatusBar.currentHeight,
-        backgroundColor: "#FFFFFF",
-    },
-    scrollView: { flex: 1 },
-    content: {
-        flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
-        position: "relative",
-    },
-    map: {
-        width: Dimensions.get("window").width,
-        height: Dimensions.get("window").height,
-    },
-});
 export default MapPlacesContainer;

@@ -17,8 +17,8 @@ const UserContextProvider = (props) => {
     const [user, setUser] = useState([]);
 
     useEffect(() => {
-        let isMounted = true;
         // cleanTokenFromSecureStore();
+        let isMounted = true;
         (async () => {
             try {
                 setGlobalSpinner(true);
@@ -29,7 +29,7 @@ const UserContextProvider = (props) => {
                     if (isMounted) {
                         setUser(birdsFetched.data);
                         setGlobalSpinner(false);
-                        console.log("UserBirds Fetched: ", birdsFetched.data.data);
+                        // console.log("UserBirds Fetched: ", birdsFetched.data.data);
                     } else {
                         return null;
                     }

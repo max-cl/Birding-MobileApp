@@ -2,8 +2,8 @@ import React from "react";
 import styled from "styled-components/native";
 
 const ContainerPressable = styled.Pressable`
-    background-color: ${(props) => (props.seen ? "coral" : "#2196f3")};
-    padding: 16px;
+    background-color: ${(props) => (props.seen ? props.theme.primaryColor : props.theme.tertiaryColor)};
+    padding: ${(props) => props.theme.padding * 2}px;
 `;
 const StyledPressable = ({ children, onPress, seen }) => {
     return (

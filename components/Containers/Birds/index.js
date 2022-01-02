@@ -25,33 +25,33 @@ import { UserContext } from "../../../context/user-context";
 import { useToggle } from "../../../custom-hooks";
 
 const StyledTouchableOpacityOptions = styled.TouchableOpacity`
-    margin: 8px 0;
-    padding: 16px;
-    background-color: ${(props) => (props.selected ? "coral" : "oldlace")};
+    margin: ${(props) => props.theme.margin}px 0;
+    padding: ${(props) => props.theme.padding * 2}px;
+    background-color: ${(props) => (props.selected ? props.theme.primaryColor : props.theme.secondaryColor)};
     align-self: flex-start;
     min-width: 50%;
 `;
 
 const StyledButtonLabelOptions = styled.Text`
-    font-size: 14px;
-    font-weight: 500;
-    color: ${(props) => (props.selected ? "white" : "coral")};
+    font-size: ${(props) => props.theme.fontSize * 1.75}px;
+    font-weight: ${(props) => props.theme.fontWeight * 5};
+    color: ${(props) => (props.selected ? props.theme.white : props.theme.primaryColor)};
     text-align: center;
 `;
 
 const StyledTouchableOpacity = styled.TouchableOpacity``;
 
 const StyledButtonLabel = styled.Text`
-    font-size: 14px;
-    font-weight: 400;
-    color: coral;
+    font-size: ${(props) => props.theme.fontSize * 1.75}px;
+    font-weight: ${(props) => props.theme.fontWeight * 4};
+    color: ${(props) => props.theme.primaryColor};
     text-align: center;
 `;
 
 const StyledBox = styled.View`
-    width: 132px;
-    height: 132px;
-    padding: 4px;
+    width: ${(props) => props.theme.width * 17}px;
+    height: ${(props) => props.theme.height * 17}px;
+    padding: ${(props) => props.theme.padding / 4}px;
     position: relative;
 `;
 
@@ -63,15 +63,15 @@ const StyledMaterialIcons = styled(MaterialIcons)`
 
 const StyledBirdName = styled.Text`
     position: absolute;
-    font-weight: 600;
-    bottom: 8px;
-    left: 8px;
-    font-size: 8px;
+    font-weight: ${(props) => props.theme.fontWeight * 6};
+    bottom: ${(props) => props.theme.margin}px;
+    left: ${(props) => props.theme.margin}px;
+    font-size: ${(props) => props.theme.fontSize * 1.25}px;
 `;
 
 const StyledPressableResetFilter = styled(Pressable)`
-    padding: 16px;
-    background-color: oldlace;
+    padding: ${(props) => props.theme.padding * 2}px;
+    background-color: ${(props) => props.theme.primaryColor};
 `;
 
 const options = ["All Birds", "Birds I've seen"];

@@ -21,6 +21,7 @@ const PlacesContextProvider = (props) => {
             try {
                 setGlobalSpinner(true);
                 const placesFetched = await axios.get(`${API_URL}/place`);
+                // console.log("placesFetched: ", placesFetched);
                 if (isMounted) {
                     setPlaces(placesFetched.data);
                     setGlobalSpinner(false);

@@ -5,8 +5,8 @@ import { AntDesign } from "@expo/vector-icons";
 
 const StyledButtonCloseModal = styled(AntDesign)`
     position: absolute;
-    right: 16px;
-    top: 16px;
+    right: ${(props) => props.theme.margin * 2}px;
+    top: ${(props) => props.theme.margin * 2}px;
 `;
 
 const CenteredView = styled.View`
@@ -15,18 +15,18 @@ const CenteredView = styled.View`
     align-items: center;
 `;
 const StyledModalView = styled.View`
-    margin: 24px;
+    margin: ${(props) => props.theme.margin * 3}px;
     position: relative;
-    border-radius: 4px;
-    padding: 48px;
+    border-radius: ${(props) => props.theme.borderRadius / 2}px;
+    padding: ${(props) => props.theme.padding * 6}px;
     align-items: center;
-    background-color: #ffffff;
+    background-color: ${(props) => props.theme.white};
     min-width: 80%;
     min-height: 32%;
     justify-content: center;
-    border-color: #c0c0c0;
+    border-color: ${(props) => props.theme.borderColor};
     border-width: 0.4px;
-    shadow-color: #c0c0c0;
+    shadow-color: ${(props) => props.theme.borderColor};
     shadow-offset: 4px 4px;
     shadow-opacity: 1;
     shadow-radius: 4px;
