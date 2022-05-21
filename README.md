@@ -1,3 +1,3 @@
 # Birding-MobileApp
 
-<img width="720" alt="birds" src="https://user-images.githubusercontent.com/39265526/169652466-40d87bea-17da-486f-90ee-633c5b06a739.png">
+<img alt="birds" src="https://user-images.githubusercontent.com/39265526/169652682-495af7c4-9c29-453d-b862-7c38cd854972.png">
