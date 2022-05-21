@@ -1,7 +1,7 @@
 # Birding-MobileApp
 
 ### Home (Birds)
-<img width="480" alt="birds" src="https://user-images.githubusercontent.com/39265526/169651839-7324756e-bd69-4675-bc65-2f5888d40bba.png">
+<img width="480" style="border: 1px solid black" alt="birds" src="https://user-images.githubusercontent.com/39265526/169651839-7324756e-bd69-4675-bc65-2f5888d40bba.png">
 
 ### Bird details
 <img width="480" alt="details" src="https://user-images.githubusercontent.com/39265526/169651844-1b44eadb-eeed-4449-81d9-71103fdc90d9.png">
